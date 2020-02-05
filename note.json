@@ -1,0 +1,12 @@
+{
+    "basics": {
+        "general": [
+            "everything in java is a CLASS ( exept import, package)",
+            "print with System.out.println(''); this prints text to the console"
+        ],
+        "syntax": [
+            "everything is inside {}, must match",
+            "case sensitive - capitilization matters"
+        ]
+    }
+}

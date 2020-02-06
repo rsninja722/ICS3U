@@ -1,12 +1,18 @@
 {
     "basics": {
         "general": [
-            "everything in java is a CLASS ( exept import, package)",
-            "print with System.out.println(''); this prints text to the console"
+            "everything in java is a CLASS ( except import, package)",
+            "print with System.out.println(''); this prints text to the console",
+            "special characters can be printed using escape codes. Use a \ before the character. \n is a newline. \' is a single quote "
         ],
         "syntax": [
             "everything is inside {}, must match",
-            "case sensitive - capitilization matters"
+            "case sensitive - capitalization matters"
         ]
+    },
+    "eclipse" : {
+    	"TODO" : [
+    		"add more here"
+    	]
     }
 }

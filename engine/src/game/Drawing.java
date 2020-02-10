@@ -9,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Drawing extends JPanel {
+	
 	private static final long serialVersionUID = 1L;
 
 	public JPanel p;
@@ -55,12 +56,4 @@ public class Drawing extends JPanel {
 		canvas.clearRect(0, 0, buffer.getWidth(), buffer.getHeight());
 	}
 	
-// 	protected void paintComponent(Graphics g) {
-//         rect(10, 10, 10, 10, Color.YELLOW);
-// //	      super.paintComponent(g);
-// 		System.out.println("drawing");
-// //		g.drawImage(buffer,0,0,this);
-// //		canvas.setBackground(new Color(0, 0, 0, 0));
-// //		canvas.clearRect(0, 0, buffer.getWidth(), buffer.getHeight());
-// 	}
 }

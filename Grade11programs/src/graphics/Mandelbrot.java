@@ -19,11 +19,11 @@ public class Mandelbrot {
 		new Mandelbrot();
 	}
 	
-	GraphicsConsole gc = new GraphicsConsole (600,600, "HSA2 Graphics");
+	GraphicsConsole gc = new GraphicsConsole (800,800, "HSA2 Graphics");
 	BufferedImage img;
 	
-	double cw = 600;
-	double ch = 600;
+	double cw = 800;
+	double ch = 800;
 	
 	double realMin = -2;
 	double realMax = 1;
@@ -39,7 +39,7 @@ public class Mandelbrot {
 		//do all drawing here
 		
 		
-		img = new BufferedImage(600,600, BufferedImage.TYPE_INT_RGB);
+		img = new BufferedImage(800,800, BufferedImage.TYPE_INT_RGB);
 		
 		// loop
 		while(true) {

@@ -22,19 +22,18 @@ public class GameJava {
 	
 	public static boolean running = true;
 	
-	public GameJava(int gameWidth, int gameHeight) {
-		init(gameWidth,gameHeight);
+	public GameJava(int gameWidth, int gameHeight, int fps, int ups) {
+		init(gameWidth,gameHeight, fps, ups);
 	}
-	
-	public void init() {
-		init(800,600);
-    }
 
-	public void init(int gameWidth, int gameHeight) {
+	public void init(int gameWidth, int gameHeight, int fps, int ups) {
 		System.out.println("constructing GamaJava");
 		
         gw = gameWidth;
         gh = gameHeight;
+        
+        framePerSecond = fps;
+        updatesPerSecond = ups;
         
         d = new Drawing();
         

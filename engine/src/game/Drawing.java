@@ -41,12 +41,28 @@ public class Drawing extends JPanel {
         System.out.println("initialized");
 	}
 	
-	public void rect(int x,int y,int w,int h,Color c) {
-		// Graphics g = p.getGraphics();
-		// System.out.println(g);
+	public void setColor(Color c) {
+		canvas.setColor(c);
+	}
+	
+	public void rect(int x,int y,int w,int h) {
+		canvas.fillRect(x - (w/2), y - (h/2), w, h);
+	}
+	
+	public void rect(int x,int y,int w,int h, Color c) {
 		canvas.setColor(c);
 		canvas.fillRect(x, y, w, h);
 	}
+	
+	public void circle(int x, int y, int r, Color c) {
+		canvas.setColor(c);
+		canvas.fillOval(x - (r / 2), y - (r / 2), r, r);
+	}
+	
+	public void circle(int x, int y, int r) {
+		canvas.fillOval(x - (r / 2), y - (r / 2), r, r);
+	}
+	
 	
 
 	public void render() {

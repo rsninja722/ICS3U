@@ -12,7 +12,7 @@ public class ExampleUsage extends GameJava {
 	static GameJava g;
 	
 	public static void main(String[] args) throws InterruptedException {
-		g = new ExampleUsage(800, 500, 60, 60);
+		g = new ExampleUsage(800, 700, 60, 60);
     }
 	
 	// put code here to draw to screen
@@ -28,8 +28,8 @@ public class ExampleUsage extends GameJava {
 
 	// put code here to update game
 	public void update() {
-	}
-	
+		d.camera.x++;
+	}	
 	
 	// used to run loops, do not change
 	private void startLoops() {

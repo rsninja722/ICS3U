@@ -1,5 +1,7 @@
 package game;
 
+import game.drawing.Drawing;
+
 public class GameJava {
 	
 	public static int gw;

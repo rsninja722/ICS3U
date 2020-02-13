@@ -1,6 +1,7 @@
 import java.awt.Color;
 
 import game.*;
+import game.drawing.Sprite;
 
 public class ExampleUsage extends GameJava {
 
@@ -10,6 +11,8 @@ public class ExampleUsage extends GameJava {
 	}
 
 	static GameJava g;
+	
+	Sprite boss = new Sprite("S:\\ICS3U\\engine\\Boss10.png");
 	
 	public static void main(String[] args) throws InterruptedException {
 		g = new ExampleUsage(800, 700, 60, 60);
@@ -24,6 +27,8 @@ public class ExampleUsage extends GameJava {
 		d.circle(100, 100, (int)frameCount/10);
 		
 		d.circle(150, 150, (int)frameCount/15, Color.MAGENTA);
+		
+		d.imgIgnoreCutoff(boss,200,200,0,1,1);
 	}
 
 	// put code here to update game
@@ -40,6 +45,7 @@ public class ExampleUsage extends GameJava {
 			double currentTime = System.nanoTime();
 			if(currentTime - lastDrawTime >= nanosPerFrame) {
                 synchronized(d) {
+                	d.preRender();
                 	draw();
                     d.render();
                 }

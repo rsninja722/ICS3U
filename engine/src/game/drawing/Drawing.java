@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
@@ -23,8 +24,10 @@ public class Drawing extends JPanel {
 	public JFrame f;
 	
 	private BufferedImage buffer;
+	private BufferedImage buffer1;
+	private BufferedImage buffer2;
 	
-	public Graphics canvas;
+	public Graphics2D canvas;
 	
 	// camera to move view
 	public Camera camera = new Camera();
@@ -32,6 +35,9 @@ public class Drawing extends JPanel {
 	// drawing offset
 	private int difx = 0;
 	private int dify = 0;
+	
+	// 0 = translations, 1 = adding scaling, 2 = adding rotations
+	private int drawingMode = 0;
 	
 	public Drawing()  {
         System.out.println("constructing Drawing");
@@ -80,23 +86,56 @@ public class Drawing extends JPanel {
 	    Image img = spr.img;
 //	    if(angle===0&&sx===1&&sy===1) {
 //	        curCtx.drawImage(spr,Math.round(x+camera.x+difx-(spr.width/2)),Math.round(y+camera.y+dify-(spr.height/2)));
-//	    } else {
-//	        curCtx.setTransform(sx, 0, 0, sy, Math.round(x+camera.x+difx), Math.round(y+camera.y+dify));
-//	        curCtx.rotate(angle);
-//	        curCtx.drawImage(spr,Math.round(-spr.width/2),Math.round(-spr.height/2));
-//	        curCtx.setTransform(1, 0, 0, 1, 0, 0);
 //	    }
+        AffineTransform t = canvas.getTransform();
+        
+        canvas.rotate(camera.angle, Math.round(x+camera.x+difx), Math.round(y+camera.y+dify));
+        canvas.drawImage(img,Math.round(-spr.width/2),Math.round(-spr.height/2),null);
+        
+        canvas.setTransform(t);
 	}
 	
+	public void preRender() {
+		switchDrawMode();
+	}
 	
+	// sets the drawing mode based on what transformations are needed
+	private void switchDrawMode() {
+//	    if(camera.zoom<0.1f) {
+//	    	camera.zoom=0.1f;
+//	    	}
+//	    if(camera.angle!=0) {
+//	    	drawingMode=2;
+//	    } else if(camera.zoom!=1) {
+//	    	drawingMode=1;
+//	    } else {
+//	    	drawingMode=0;
+//	    }
+	    switch (drawingMode) {
+	        case 0: canvas = buffer.createGraphics(); break;
+	        case 1: canvas = buffer1.createGraphics(); break;
+	        case 2: canvas = buffer2.createGraphics(); break;
+	    }
+	}
 	
+	// draws buffers onto the screen
 	public void render() {
 		// f.repaint();
 		Graphics2D g2 = (Graphics2D) p.getGraphics();
-		g2.rotate(camera.angle, GameJava.gw/2,GameJava.gh/2);
-		g2.drawImage(buffer,0,0,this);
-		g2.rotate(-camera.angle, GameJava.gw/2,GameJava.gh/2);
-		camera.angle += 0.01;
+//		g2.rotate(camera.angle, GameJava.gw/2,GameJava.gh/2);
+//		g2.drawImage(buffer,0,0,this);
+//		g2.rotate(-camera.angle, GameJava.gw/2,GameJava.gh/2);
+//		camera.angle += 0.01;
+		
+		
+		if(drawingMode == 0) {
+			g2.drawImage(buffer,0,0,this);
+		} else if(drawingMode == 1) {
+			
+		} else if(drawingMode == 2) {
+			
+		}
+		
 		canvas.clearRect(0, 0, buffer.getWidth(), buffer.getHeight());
 	}
 	

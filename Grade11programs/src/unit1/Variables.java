@@ -1,5 +1,12 @@
 package unit1;
 
+/* 2020.02.12
+ * James N
+ * Variables
+ * using variables
+ * 
+ */
+
 public class Variables {
 
 	public static void main(String[] args) {

@@ -12,7 +12,9 @@ public class ExampleUsage extends GameJava {
 
 	static GameJava g;
 	
-	Sprite boss = new Sprite("S:\\ICS3U\\engine\\Boss10.png");
+	Sprite boss = new Sprite("Boss10.png");
+	
+//	Sprites = new Sprites("S:\\ICS3U\\engine\\Boss10.png");
 	
 	public static void main(String[] args) throws InterruptedException {
 		g = new ExampleUsage(800, 700, 60, 60);
@@ -28,12 +30,12 @@ public class ExampleUsage extends GameJava {
 		
 		d.circle(150, 150, (int)frameCount/15, Color.MAGENTA);
 		
-		d.imgIgnoreCutoff(boss,200,200,0,1,1);
+		d.imgIgnoreCutoff(boss,300,200,frameCount/100.0,8,8);
 	}
 
 	// put code here to update game
 	public void update() {
-		d.camera.x++;
+//		d.camera.x++;
 	}	
 	
 	// used to run loops, do not change

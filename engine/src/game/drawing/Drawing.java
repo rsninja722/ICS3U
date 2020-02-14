@@ -83,16 +83,19 @@ public class Drawing extends JPanel {
 	}
 	
 	public void imgIgnoreCutoff(Sprite spr,int x,int y,double angle,double sx,double sy) {
-	    Image img = spr.img;
-//	    if(angle===0&&sx===1&&sy===1) {
-//	        curCtx.drawImage(spr,Math.round(x+camera.x+difx-(spr.width/2)),Math.round(y+camera.y+dify-(spr.height/2)));
-//	    }
         AffineTransform t = canvas.getTransform();
         
-        canvas.rotate(camera.angle, Math.round(x+camera.x+difx), Math.round(y+camera.y+dify));
-        canvas.drawImage(img,Math.round(-spr.width/2),Math.round(-spr.height/2),null);
+        canvas.translate(Math.round(x+camera.x+difx), Math.round(y+camera.y+dify)); 
+        canvas.scale(sx, sy);
+        canvas.rotate(angle);
+        
+        canvas.drawImage(spr.img,Math.round(-spr.width/2),Math.round(-spr.height/2),null);
         
         canvas.setTransform(t);
+	}
+	
+	public void imgIgnoreCutoff(Sprite spr,int x,int y) {
+        canvas.drawImage(spr.img,Math.round(-spr.width/2),Math.round(-spr.height/2),null);
 	}
 	
 	public void preRender() {

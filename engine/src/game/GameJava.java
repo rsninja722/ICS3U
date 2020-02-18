@@ -1,6 +1,7 @@
 package game;
 
 import game.drawing.Drawing;
+import game.drawing.Sprites;
 
 public class GameJava {
 	
@@ -23,6 +24,8 @@ public class GameJava {
 	public static Drawing d;
 	
 	public static boolean running = true;
+	
+	public Sprites sprites = new Sprites();
 	
 	public GameJava(int gameWidth, int gameHeight, int fps, int ups) {
 		init(gameWidth,gameHeight, fps, ups);

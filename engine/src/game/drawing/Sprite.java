@@ -14,7 +14,7 @@ public class Sprite {
 	
 	public Sprite(String filePath) {
 		try {
-			img = ImageIO.read(new File("assets\\images\\"+filePath));
+			img = ImageIO.read(new File(filePath));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

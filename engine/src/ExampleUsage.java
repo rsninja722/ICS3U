@@ -1,7 +1,6 @@
 import java.awt.Color;
 
 import game.*;
-import game.drawing.Sprite;
 
 public class ExampleUsage extends GameJava {
 
@@ -12,7 +11,7 @@ public class ExampleUsage extends GameJava {
 
 	static GameJava g;
 	
-	Sprite boss = new Sprite("Boss10.png");
+//	Sprite boss = new Sprite("Boss10.png");
 	
 //	Sprites = new Sprites("S:\\ICS3U\\engine\\Boss10.png");
 	
@@ -30,7 +29,7 @@ public class ExampleUsage extends GameJava {
 		
 		d.circle(150, 150, (int)frameCount/15, Color.MAGENTA);
 		
-		d.imgIgnoreCutoff(boss,300,200,frameCount/100.0,8,8);
+		d.imgIgnoreCutoff(sprites.get("Boss10"),300,200,frameCount/100.0,8,8);
 	}
 
 	// put code here to update game

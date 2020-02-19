@@ -8,23 +8,34 @@ import java.util.HashMap;
 public class Sprites {
 	
 	HashMap<String,Sprite> spriteList = new HashMap<String,Sprite>();
-	
-	private Path currentRelativePath = Paths.get("");
-	private String baseDirectory = currentRelativePath.toAbsolutePath().toString() + "\\assets\\images\\";
+    
+    private Path currentRelativePath = Paths.get("");
+    // absolute path of the images folder
+    private String baseDirectory = currentRelativePath.toAbsolutePath().toString() + "\\assets\\images\\";
 	
 	public Sprites() {
-		File dir = new File(baseDirectory);
-		String[] children = dir.list();
+        System.out.println("loading sprites from: " +baseDirectory);
+        // create file to get all other files in directory
+        File dir = new File(baseDirectory);
+
+        // get array of other files
+        String[] children = dir.list();
+
+        System.out.println(dir);
+        
+        // go through all files
 		for(int i=0;i<children.length;i++) {
 			String name = children[i];
-			
+            
+            // if it is a portable network graphic, create a sprite with the image, and add it to the hashmap
 			if(name.endsWith(".png")) {
 				String spriteName = name.substring(0, name.indexOf("."));
 				spriteList.put(spriteName, new Sprite(baseDirectory+name));
 			}
 		}
 	}
-	
+    
+    // returns a sprite from the hash map
 	public Sprite get(String spriteName) {
 		Sprite s = spriteList.get(spriteName);
 		if(s == null) {

@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+// sprites contain an image, and info about the dimensions
 public class Sprite {
 	public Image img;
 	public int width;
@@ -20,7 +21,8 @@ public class Sprite {
 		}
 		width = img.getWidth(null);
 		height = img.getHeight(null);
-		
+        
+        // used to determine when to stop drawing if off screen
 		drawLimit = (int) Math.ceil(Math.max(width,height)/2.0);
 	}
 }

@@ -10,9 +10,26 @@
             "case sensitive - capitalization matters"
         ]
     },
-    "eclipse" : {
-    	"TODO" : [
-    		"add more here"
-    	]
+    "data types": {
+        "numbers": {
+            "integer": {
+                "byte": "1 byte long",
+                "short": "2 bytes long",
+                "int": "4 bytes long",
+                "long": "8 bytes long"
+            },
+            "floating point": {
+                "float": "4 bytes long, can have decimals",
+                "double": "8 bytes long, can have decimals"
+            },
+            "boolean": "1 byte, true or false",
+            "text": {
+                "char": "2 bytes, signified with single quotes",
+                "String": [
+                    "Strings are arrays of characters",
+                    ""
+                ]
+            }
+        }
     }
 }

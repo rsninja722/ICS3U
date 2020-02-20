@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class Triplets {
 	
-	static String sentanceDefault = "Thiiis is a sentttance with words wiiith extrrra letteeetrs.";
+	static String sentanceDefault = "Thiiis is a sentttance with words wiiith extrrra  tesst letteeetrs.";
 
 	public static void main(String[] args) {
 		Scanner s = new Scanner(System.in);
@@ -35,21 +35,25 @@ public class Triplets {
 			// increment count if same letter
 			if(currentChar == lastChar) {
 				repeatCount++;
+			} else {
+				repeatCount = 0;
 			}
 			
 			// if a letter repeats twice (3 in a row) find and add word to repeated words
 			if(repeatCount == 2) {
 				// find start
-				int wordStart = i;
+				int wordStart = i-1;
 				while(wordStart >= 0 && sentance.charAt(wordStart) != ' ') { wordStart--; }
 				// find end
 				int wordEnd = i;
-				while(wordEnd < sentance.length() && sentance.charAt(wordEnd) != ' ') { wordEnd++; }
+				while(wordEnd < sentance.length()-1 && sentance.charAt(wordEnd) != ' ') { wordEnd++; }
+				
 				// add word
 				repeatedWords += sentance.substring(wordStart+1,wordEnd) + " ";
 
 				// reset count
 				repeatCount = 0;
+				
 			}
 			
 			// set last word to current word

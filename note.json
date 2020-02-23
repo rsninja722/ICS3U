@@ -3,7 +3,7 @@
         "general": [
             "everything in java is a CLASS ( except import, package)",
             "print with System.out.println(''); this prints text to the console",
-            "special characters can be printed using escape codes. Use a \ before the character. \n is a newline. \' is a single quote "
+            "special characters can be printed using escape codes. Use a \\ before the character. \\n is a newline. \\' is a single quote "
         ],
         "syntax": [
             "everything is inside {}, must match",
@@ -21,15 +21,15 @@
             "floating point": {
                 "float": "4 bytes long, can have decimals",
                 "double": "8 bytes long, can have decimals"
-            },
-            "boolean": "1 byte, true or false",
-            "text": {
-                "char": "2 bytes, signified with single quotes",
-                "String": [
-                    "Strings are arrays of characters",
-                    ""
-                ]
             }
+        },
+        "boolean": "1 byte, true or false",
+        "text": {
+            "char": "2 bytes, signified with single quotes",
+            "String": [
+                "Strings are arrays of characters",
+                ""
+            ]
         }
     }
 }

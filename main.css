@@ -1,0 +1,26 @@
+html {
+    background-color: #1e1e1e;
+    font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
+    color: #4de1f5;
+}
+
+button {
+    background-color: #00000000;
+    color: #4de1f5;
+    margin: 3px;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #555555;
+}
+
+button:active {
+    border-style: inset;
+}
+
+.indent {
+    position: relative;
+    left: 50px;
+}

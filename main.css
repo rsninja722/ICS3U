@@ -2,6 +2,8 @@ html {
     background-color: #1e1e1e;
     font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
     color: #4de1f5;
+    overflow-x: hidden;
+    overflow-wrap: normal;
 }
 
 button {
@@ -23,4 +25,5 @@ button:active {
 .indent {
     position: relative;
     left: 50px;
+    width: 90%;
 }

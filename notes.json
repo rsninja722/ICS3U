@@ -1,14 +1,30 @@
 {
+    "TODO" :[
+        "finish graphics"
+    ],
     "basics": {
         "general": [
             "everything in java is a CLASS ( except import, package)",
-            "print with System.out.println(''); this prints text to the console",
-            "special characters can be printed using escape codes. Use a \\ before the character. \\n is a newline. \\' is a single quote "
+            "print with System.out.println(\"\"); this prints text to the console",
+            "special characters can be printed using escape codes. Use a \\ before the character. \\n is a newline. \\' is a single quote ",
+            "delay can be added with Thread.sleep(milliseconds);"
         ],
         "syntax": [
             "everything is inside {}, must match",
             "case sensitive - capitalization matters"
-        ]
+        ],
+        "variables": [
+            "initialized by doing: dataType variableName;",
+            "accesed by typeing the name",
+            "changed with assignment such as: = or %="
+        ],
+        "modifiers": {
+            "public": "visable to everything",
+            "private": "visable to just its class",
+            "protected":"hardly used, visable to pakage and subclasses",
+            "static":"can be accessed without creating an instance of the object",
+            "final":"javascript const, but in java: once set, cannot be modified"
+        }
     },
     "data types": {
         "numbers": {
@@ -25,11 +41,48 @@
         },
         "boolean": "1 byte, true or false",
         "text": {
-            "char": "2 bytes, signified with single quotes",
-            "String": [
-                "Strings are arrays of characters",
-                ""
-            ]
+            "char": "2 bytes, signified with single quotes. can be written with single quotes or as an integer",
+            "String": {
+                "definition":"Strings are arrays of characters",
+                "creation":"String name = \"text\" or new String(\"text\")",
+                "comparison":"must use .equals() cannot use ==",
+                "concatination":"use + or +=, or for effeceincy make a StringBuilder and use .append(string)",
+                "get character":".charAt(index)",
+                "get part of String":".substring(start index inclusive, end index exclusive",
+                "split word":".split(what to split on or regex) splits the string up into an array of strings",
+                "length":".length() its a method, not a property"
+            }
+        },
+        "arrays": {
+            "creation":"datatype[] varname = new datatype[size];. A whole array can be set by setting the value to the values seperated by commas within curly brakets like this: {3,4,6,2,4}",
+            "access element":"arrayName[index] - this syntax can be used to get and set"
+
         }
+    },
+    "classes": {
+        "class x extends y":"a class gets all the variables and methods of the extended class"
+    },
+    "math": {
+        "random": {
+            "Math" : "Math.random() returns double between 0.0 and 1.0",
+            "Utils": "make a new Random object, then use nextInt(max)"
+        }
+    },
+    "physics" : {
+        "cool things": {
+            "bonucing prevent sticking" : "only detect collision if an object is moving in a certaion direction.\nexample: bounce of left wall if(boject hitting left wall && velocityX < 0) {}"
+        }
+    },
+    "graphics":{
+        "swing and awt" : {
+            "Color":"4 bytes representing of A,R,G,B."
+        }
+    },
+    "input": {
+        "scanner": [
+            "first create a new Scanner(pass in System.in)",
+            "text can be read with the next methods, such as .nextLine() and .nextFloat()",
+            "when done getting input, close the scanner with .close() to free up resources and to get eclipse to stop being angry"
+        ]
     }
 }

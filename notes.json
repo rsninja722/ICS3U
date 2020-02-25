@@ -55,8 +55,8 @@
         },
         "arrays": {
             "creation":"datatype[] varname = new datatype[size];. A whole array can be set by setting the value to the values seperated by commas within curly brakets like this: {3,4,6,2,4}",
-            "access element":"arrayName[index] - this syntax can be used to get and set"
-
+            "access element":"arrayName[index] - this syntax can be used to get and set",
+            "printing":"Array.toString(array)"
         }
     },
     "classes": {

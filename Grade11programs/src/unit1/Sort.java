@@ -15,8 +15,8 @@ import hsa2.GraphicsConsole;
 
 public class Sort {
 	
-	static int arrLength = 100;
-	static int barWidth = 8;
+	static int arrLength = 50;
+	static int barWidth = 16;
 	
 	static int[] arr = new int[arrLength];
 	
@@ -89,7 +89,7 @@ public class Sort {
 			gc.setColor(mainColor);
 			for(int j=0;j<arr.length;j++) {
 				if(j==index) {
-					gc.setColor(Color.getHSBColor(0.0f, 1.0f, 1.0f));
+					gc.setColor(Color.getHSBColor(0.5f, 1.0f, 0.5f));
 				} else {
 					gc.setColor(mainColor);
 				}

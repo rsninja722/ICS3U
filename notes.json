@@ -1,88 +1,115 @@
 {
-    "TODO" :[
-        "finish graphics"
-    ],
-    "basics": {
-        "general": [
-            "everything in java is a CLASS ( except import, package)",
-            "print with System.out.println(\"\"); this prints text to the console",
-            "special characters can be printed using escape codes. Use a \\ before the character. \\n is a newline. \\' is a single quote ",
-            "delay can be added with Thread.sleep(milliseconds);"
-        ],
-        "syntax": [
-            "everything is inside {}, must match",
-            "case sensitive - capitalization matters"
-        ],
-        "variables": [
-            "initialized by doing: dataType variableName;",
-            "accesed by typeing the name",
-            "changed with assignment such as: = or %="
-        ],
-        "modifiers": {
-            "public": "visable to everything",
-            "private": "visable to just its class",
-            "protected":"hardly used, visable to pakage and subclasses",
-            "static":"can be accessed without creating an instance of the object",
-            "final":"javascript const, but in java: once set, cannot be modified"
-        }
-    },
-    "data types": {
-        "numbers": {
-            "integer": {
-                "byte": "1 byte long",
-                "short": "2 bytes long",
-                "int": "4 bytes long",
-                "long": "8 bytes long"
-            },
-            "floating point": {
-                "float": "4 bytes long, can have decimals",
-                "double": "8 bytes long, can have decimals"
-            }
-        },
-        "boolean": "1 byte, true or false",
-        "text": {
-            "char": "2 bytes, signified with single quotes. can be written with single quotes or as an integer",
-            "String": {
-                "definition":"Strings are arrays of characters",
-                "creation":"String name = \"text\" or new String(\"text\")",
-                "comparison":"must use .equals() cannot use ==",
-                "concatination":"use + or +=, or for effeceincy make a StringBuilder and use .append(string)",
-                "get character":".charAt(index)",
-                "get part of String":".substring(start index inclusive, end index exclusive",
-                "split word":".split(what to split on or regex) splits the string up into an array of strings",
-                "length":".length() its a method, not a property"
-            }
-        },
-        "arrays": {
-            "creation":"datatype[] varname = new datatype[size];. A whole array can be set by setting the value to the values seperated by commas within curly brakets like this: {3,4,6,2,4}",
-            "access element":"arrayName[index] - this syntax can be used to get and set",
-            "printing":"Array.toString(array)"
-        }
-    },
-    "classes": {
-        "class x extends y":"a class gets all the variables and methods of the extended class"
-    },
-    "math": {
-        "random": {
-            "Math" : "Math.random() returns double between 0.0 and 1.0",
-            "Utils": "make a new Random object, then use nextInt(max)"
-        }
-    },
-    "physics" : {
-        "cool things": {
-            "bonucing prevent sticking" : "only detect collision if an object is moving in a certaion direction.\nexample: bounce of left wall if(boject hitting left wall && velocityX < 0) {}"
-        }
-    },
-    "graphics":{
-        "swing and awt" : {
-            "Color":"4 bytes representing of A,R,G,B."
-        }
-    },
-    "input": {
-        "scanner": [
-            "first create a new Scanner(pass in System.in)",
-            "text can be read with the next methods, such as .nextLine() and .nextFloat()",
-            "when done getting input, close the scanner with .close() to free up resources and to get eclipse to stop being angry"
-        ]
-    }
+	"basics": {
+		"general": [
+			"everything in java is a CLASS ( except import, package)",
+			"print with System.out.println(\"\"); this prints text to the console",
+			"special characters can be printed using escape codes. Use a \\ before the character. \\n is a newline. \\' is a single quote ",
+			"delay can be added with Thread.sleep(milliseconds);"
+		],
+		"naming conventions": {
+			"all caps": "constants",
+			"first letter caps": "classes and file names",
+			"camel case": "everything else: names, primitive data types..."
+		},
+		"syntax": [
+			"everything is inside {}, must match",
+			"case sensitive - capitalization matters"
+		],
+		"variables": [
+			"initialized by doing: dataType variableName;",
+			"accesed by typeing the name",
+			"changed with assignment such as: = or %="
+		],
+		"modifiers": {
+			"public": "visable to everything",
+			"private": "visable to just its class",
+			"protected": "hardly used, visable to pakage and subclasses",
+			"static": "can be accessed without creating an instance of the object",
+			"final": "javascript const, but in java: once set, cannot be modified"
+		}
+	},
+	"data types": {
+		"numbers": {
+			"integer": {
+				"byte": "1 byte long",
+				"short": "2 bytes long",
+				"int": "4 bytes long",
+				"long": "8 bytes long"
+			},
+			"floating point": {
+				"float": "4 bytes long, can have decimals",
+				"double": "8 bytes long, can have decimals"
+			}
+		},
+		"boolean": "1 byte, true or false",
+		"text": {
+			"char": "2 bytes, signified with single quotes. can be written with single quotes or as an integer",
+			"String": {
+				"definition": "Strings are arrays of characters",
+				"creation": "String name = \"text\" or new String(\"text\")",
+				"comparison": "must use .equals() cannot use ==",
+				"concatination": "use + or +=, or for effeceincy make a StringBuilder and use .append(string)",
+				"get character": ".charAt(index)",
+				"get part of String": ".substring(start index inclusive, end index exclusive",
+				"split word": ".split(what to split on or regex) splits the string up into an array of strings",
+				"length": ".length() its a method, not a property"
+			}
+		},
+		"arrays": {
+			"creation": "datatype[] varname = new datatype[size];. A whole array can be set by setting the value to the values seperated by commas within curly brakets like this: {3,4,6,2,4}",
+			"access element": "arrayName[index] - this syntax can be used to get and set",
+			"printing": "Array.toString(array)"
+		}
+	},
+	"classes": {
+		"class x extends y": "a class gets all the variables and methods of the extended class"
+	},
+	"math": {
+		"random": {
+			"Math": "Math.random() returns double between 0.0 and 1.0",
+			"Utils": "make a new Random object, then use nextInt(max)"
+		}
+	},
+	"physics": {
+		"cool things": {
+			"bonucing prevent sticking": "only detect collision if an object is moving in a certaion direction.\nexample: bounce of left wall if(boject hitting left wall && velocityX < 0) {}"
+		}
+	},
+	"graphics": {
+		"swing and awt": {
+			"Color": "4 bytes representing of A,R,G,B. Includes some constants for color like Color.BLUE  also has some methods to make colors like .getHSBColor(h, s, b)",
+			"setup": [
+				"make a class that extends JPanel, and make a new one",
+				"make a new JFrame, then add the JPanel to it",
+				"typical initialization code looks like:\nf = new JFrame(frame name);\nf.add(JPanel);\nf.setSize(GameJava.gw, GameJava.gh);\nf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\nf.getContentPane().add(p, BorderLayout.CENTER);\nf.setVisible(true);"
+			],
+			"drawing": [
+				"Java automatically calls the paintComponent method in your class extending JPanel",
+				"create a public void paintComponent(Graphics g) {} and put drawing code in the block",
+				"request the method to be called by calling .repaint(); on your JFrame"
+			],
+			"Graphics and Graphics2D": {
+				"setColor(Color)": "sets the color something should be drawn with",
+				"rectangle/ovals": [
+					"the following methods can have the draw ( draws an outline ) or the fill ( draws a solid shape ) prefix:",
+					"Rect(x,y,w,h)",
+					"draws a rectangle from the top left",
+					"Oval(x,y,w,h)",
+					"draws a oval or circle from the top left"
+				],
+				"drawLine(x1,y1,x2,y2)": "draws a line from the first coordinates, to the second coordinates""Images": {
+					"loading": "use imageIO to read an image, example: Image i = ImageIO.read(new File(filePath))",
+					"properties": "certain properties of the image can be accessed, example : width is .getWidth()",
+					"drawing": "drawImage(Image,x,y) - draws an image, using x,y as the top left"
+				}
+			}
+		}
+	},
+	"input": {
+		"scanner": [
+			"first create a new Scanner(pass in System.in)",
+			"text can be read with the next methods, such as .nextLine() and .nextFloat()",
+			"when done getting input, close the scanner with .close() to free up resources and to get eclipse to stop being angry"
+		]
+	}
 }

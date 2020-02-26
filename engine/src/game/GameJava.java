@@ -1,5 +1,11 @@
 package game;
 
+/*
+ * plan:
+ * make a looper manager class that makes a new gameMain and calls methods in it
+ * the main file of the game will have to have a specific name
+ */
+
 import game.drawing.Drawing;
 import game.drawing.Sprites;
 

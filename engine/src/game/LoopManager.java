@@ -2,35 +2,35 @@ package game;
 
 public class LoopManager {
 
-    GameJava g;
+    GameJava mainGameClass;
 
     public LoopManager (GameJava mainGameObject) {
-        g = mainGameObject;
+        mainGameClass = mainGameObject;
         startLoops();
     }
 
     private void startLoops() {
 		System.out.println("starting loops");
-		while(g.running) {
+		while(mainGameClass.running) {
 			
 			// drawing
 			double currentTime = System.nanoTime();
-			if(currentTime - g.lastDrawTime >= g.nanosPerFrame) {
-                synchronized(g.d) {
-                	g.d.preRender();
-                	g.draw();
-                    g.d.render();
+			if(currentTime - mainGameClass.lastDrawTime >= mainGameClass.nanosPerFrame) {
+                synchronized(mainGameClass.drawing) {
+                	mainGameClass.drawing.preRender();
+                	mainGameClass.draw();
+                    mainGameClass.drawing.render();
                 }
-				g.lastDrawTime = currentTime;
-				g.frameCount++;
+				mainGameClass.lastDrawTime = currentTime;
+				mainGameClass.frameCount++;
 			}
 			
 			// updating
 			currentTime = System.nanoTime();
-			if(currentTime - g.lastUpdateTime >= g.nanosPerUpdate) {
-				g.update();
-                g.lastUpdateTime = currentTime;
-                g.updateCount++;
+			if(currentTime - mainGameClass.lastUpdateTime >= mainGameClass.nanosPerUpdate) {
+				mainGameClass.update();
+                mainGameClass.lastUpdateTime = currentTime;
+                mainGameClass.updateCount++;
 			}
 			
 		}

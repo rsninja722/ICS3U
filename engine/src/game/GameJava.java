@@ -33,7 +33,7 @@ public class GameJava {
 	public double nanosPerUpdate;
     
     // drawing object used for all drawing
-	public Drawing d;
+	public Drawing drawing;
     
     // if set to false, game will stop running
 	public boolean running = true;
@@ -56,7 +56,7 @@ public class GameJava {
         framePerSecond = fps;
         updatesPerSecond = ups;
         
-        d = new Drawing();
+        drawing = new Drawing();
         
         nanosPerFrame = nanosecondsPerSecond / framePerSecond;
         nanosPerUpdate = nanosecondsPerSecond / updatesPerSecond;

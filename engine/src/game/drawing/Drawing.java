@@ -18,7 +18,7 @@ public class Drawing extends JPanel {
 
     private static final long serialVersionUID = 1L;
 
-    public JPanel p;
+    public JPanel panel;
 
     public JFrame f;
 
@@ -56,7 +56,7 @@ public class Drawing extends JPanel {
     public Drawing() {
         System.out.println("constructing Drawing");
 
-        p = new JPanel();
+        panel = new JPanel();
 
         gameJavaInstance = GameJava.instance;
 
@@ -64,13 +64,13 @@ public class Drawing extends JPanel {
 
         canvas = buffer.createGraphics();
 
-        p.setBackground(Color.BLUE);
+        panel.setBackground(Color.BLUE);
 
         f = new JFrame("wow");
-        f.add(p);
+        f.add(panel);
         f.setSize(gameJavaInstance.gw, gameJavaInstance.gh);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.getContentPane().add(p, BorderLayout.CENTER);
+        f.getContentPane().add(panel, BorderLayout.CENTER);
         f.setVisible(true);
 
         System.out.println("initialized");
@@ -185,7 +185,7 @@ public class Drawing extends JPanel {
     // draws buffers onto the screen
     public void render() {
         // f.repaint();
-        Graphics2D g2 = (Graphics2D) p.getGraphics();
+        Graphics2D g2 = (Graphics2D) panel.getGraphics();
         
 
         
@@ -205,7 +205,7 @@ public class Drawing extends JPanel {
         }
 
         // f.pack();
-        System.out.println(p.getWidth());
+//        System.out.println(p.getWidth());
 
         canvas.clearRect(0, 0, buffer.getWidth(), buffer.getHeight());
     }

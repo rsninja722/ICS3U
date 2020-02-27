@@ -5,18 +5,15 @@ import game.*;
 public class ExampleUsage extends GameJava {
 
 	public ExampleUsage(int gameWidth, int gameHeight, int fps, int ups) {
-		super(gameWidth, gameHeight, fps, ups);
-		startLoops();
+        super(gameWidth, gameHeight, fps, ups);
+        new LoopManager(this);
 	}
-
-	static GameJava g;
-	
-//	Sprite boss = new Sprite("Boss10.png");
-	
-//	Sprites = new Sprites("S:\\ICS3U\\engine\\Boss10.png");
+    
+    public int number1 = 563;
 	
 	public static void main(String[] args) throws InterruptedException {
-		g = new ExampleUsage(800, 700, 60, 60);
+        new ExampleUsage(800, 700, 60, 60);
+        
     }
 	
 	// put code here to draw to screen
@@ -29,40 +26,14 @@ public class ExampleUsage extends GameJava {
 		
 		d.circle(150, 150, (int)frameCount/15, Color.MAGENTA);
 		
-		d.imgIgnoreCutoff(sprites.get("Boss10"),300,200,frameCount/100.0,8,8);
+        d.imgIgnoreCutoff(sprites.get("Boss10"),300,200,frameCount/100.0,8,8);
+        d.imgIgnoreCutoff(sprites.get("car"),400,400,frameCount/-75.0,6,8);
 	}
 
 	// put code here to update game
 	public void update() {
-//		d.camera.x++;
+		// d.camera.x++;
 	}	
 	
-	// used to run loops, do not change
-	private void startLoops() {
-		System.out.println("starting loops");
-		while(running) {
-			
-			// drawing
-			double currentTime = System.nanoTime();
-			if(currentTime - lastDrawTime >= nanosPerFrame) {
-                synchronized(d) {
-                	d.preRender();
-                	draw();
-                    d.render();
-                }
-				lastDrawTime = currentTime;
-				frameCount++;
-			}
-			
-			// updating
-			currentTime = System.nanoTime();
-			if(currentTime - lastUpdateTime >= nanosPerUpdate) {
-				update();
-                lastUpdateTime = currentTime;
-                updateCount++;
-			}
-			
-		}
-	}
 
 }

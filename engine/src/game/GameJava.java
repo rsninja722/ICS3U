@@ -10,37 +10,39 @@ import game.drawing.Drawing;
 import game.drawing.Sprites;
 
 public class GameJava {
+    public static GameJava instance;
     
     // game width/height
-	public static int gw;
-	public static int gh;
+	public int gw;
+	public int gh;
     
     // fps to run updates and drawing at
-	public static int framePerSecond = 60;
-	public static int updatesPerSecond = 60;
+	public int framePerSecond = 60;
+	public int updatesPerSecond = 60;
     
     // numbers that increment every frame 
-	public static long frameCount = 0;
-	public static long updateCount = 0;
+	public long frameCount = 0;
+	public long updateCount = 0;
     
     // calculation for how long to wait between each frame
-	public static final double nanosecondsPerSecond = 1000000000;
-	public static double nanosPerFrame;
-	public static double lastDrawTime = System.nanoTime();
+	public final double nanosecondsPerSecond = 1000000000;
+	public double nanosPerFrame;
+	public double lastDrawTime = System.nanoTime();
 	
-	public static double lastUpdateTime = System.nanoTime();
-	public static double nanosPerUpdate;
+	public double lastUpdateTime = System.nanoTime();
+	public double nanosPerUpdate;
     
     // drawing object used for all drawing
-	public static Drawing d;
+	public Drawing d;
     
     // if set to false, game will stop running
-	public static boolean running = true;
+	public boolean running = true;
     
     // loads all sprites from the assets/images folder
 	public Sprites sprites = new Sprites();
 	
 	public GameJava(int gameWidth, int gameHeight, int fps, int ups) {
+        instance = this;
 		init(gameWidth,gameHeight, fps, ups);
 	}
 
@@ -58,5 +60,13 @@ public class GameJava {
         
         nanosPerFrame = nanosecondsPerSecond / framePerSecond;
         nanosPerUpdate = nanosecondsPerSecond / updatesPerSecond;
-	}
+    }
+    
+    public void draw() {
+        System.out.println("no draw method found in the main game file");
+    }
+
+    public void update() {
+        System.out.println("no update method found in the main game file");
+    }
 }

@@ -3,6 +3,7 @@ package game.drawing;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashMap;
 
 public class Sprites {
@@ -21,7 +22,7 @@ public class Sprites {
         // get array of other files
         String[] children = dir.list();
 
-        System.out.println(dir);
+        System.out.println(Arrays.toString(children));
         
         // go through all files
 		for(int i=0;i<children.length;i++) {

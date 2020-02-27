@@ -97,7 +97,8 @@
 					"Oval(x,y,w,h)",
 					"draws a oval or circle from the top left"
 				],
-				"drawLine(x1,y1,x2,y2)": "draws a line from the first coordinates, to the second coordinates""Images": {
+                "drawLine(x1,y1,x2,y2)": "draws a line from the first coordinates, to the second coordinates",
+                "Images": {
 					"loading": "use imageIO to read an image, example: Image i = ImageIO.read(new File(filePath))",
 					"properties": "certain properties of the image can be accessed, example : width is .getWidth()",
 					"drawing": "drawImage(Image,x,y) - draws an image, using x,y as the top left"

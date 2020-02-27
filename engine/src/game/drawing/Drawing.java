@@ -50,13 +50,17 @@ public class Drawing extends JPanel {
 
     public boolean absoluteDraw = false;
 
+    public GameJava gameJavaInstance;
+
     // creates window
     public Drawing() {
         System.out.println("constructing Drawing");
 
         p = new JPanel();
 
-        buffer = new BufferedImage(GameJava.gw, GameJava.gh, BufferedImage.TYPE_4BYTE_ABGR);
+        gameJavaInstance = GameJava.instance;
+
+        buffer = new BufferedImage(gameJavaInstance.gw, gameJavaInstance.gh, BufferedImage.TYPE_4BYTE_ABGR);
 
         canvas = buffer.createGraphics();
 
@@ -64,7 +68,7 @@ public class Drawing extends JPanel {
 
         f = new JFrame("wow");
         f.add(p);
-        f.setSize(GameJava.gw, GameJava.gh);
+        f.setSize(gameJavaInstance.gw, gameJavaInstance.gh);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.getContentPane().add(p, BorderLayout.CENTER);
         f.setVisible(true);

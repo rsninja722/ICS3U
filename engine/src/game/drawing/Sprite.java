@@ -11,8 +11,8 @@ public class Sprite {
 	public Image img;
 	public int width;
 	public int height;
-	public int drawLimit;
-	
+    public int drawLimit;
+
 	public Sprite(String filePath) {
 		try {
 			img = ImageIO.read(new File(filePath));

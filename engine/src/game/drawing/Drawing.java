@@ -124,7 +124,7 @@ public class Drawing extends JPanel {
 
     // draws an image centered on x,y with an angle, scaled on the x and y axis
     public void img(Sprite spr, int x, int y, double angle, double sx, double sy) {
-        int half = spr.drawLimit;
+        int half = spr.drawLimit * Math.max((int)sx,(int)sy);
         if ((x + half > drawLimitLeft && x - half < drawLimitRight && y + half > drawLimitTop && y - half < drawLimitBottom) || absoluteDraw) {
             AffineTransform t = canvas.getTransform();
 
@@ -135,6 +135,14 @@ public class Drawing extends JPanel {
             canvas.drawImage(spr.img, Math.round(-spr.width / 2), Math.round(-spr.height / 2), null);
 
             canvas.setTransform(t);
+        }
+    }
+
+    // draws an image centered on x,y
+    public void img(Sprite spr, int x, int y) {
+        int half = spr.drawLimit;
+        if ((x + half > drawLimitLeft && x - half < drawLimitRight && y + half > drawLimitTop && y - half < drawLimitBottom) || absoluteDraw) {
+            canvas.drawImage(spr.img, Math.round(-spr.width / 2), Math.round(-spr.height / 2), null);
         }
     }
 
@@ -178,20 +186,29 @@ public class Drawing extends JPanel {
     public void render() {
         // f.repaint();
         Graphics2D g2 = (Graphics2D) p.getGraphics();
-        // g2.rotate(camera.angle, GameJava.gw/2,GameJava.gh/2);
-        // g2.drawImage(buffer,0,0,this);
-        // g2.rotate(-camera.angle, GameJava.gw/2,GameJava.gh/2);
-        // camera.angle += 0.01;
+        
+
+        
+        camera.angle += 0.01;
 
         if (drawingMode == 0) {
             g2.drawImage(buffer, 0, 0, this);
         } else if (drawingMode == 1) {
 
         } else if (drawingMode == 2) {
-
+            AffineTransform t = g2.getTransform();
+            g2.translate( gameJavaInstance.gw/2,gameJavaInstance.gh/2);
+            g2.rotate(camera.angle);
+            g2.scale(2,2);
+            g2.drawImage(buffer,-gameJavaInstance.gw/2,-gameJavaInstance.gh/2,this);
+            g2.setTransform(t);
         }
+
+        // f.pack();
+        System.out.println(p.getWidth());
 
         canvas.clearRect(0, 0, buffer.getWidth(), buffer.getHeight());
     }
+
 
 }

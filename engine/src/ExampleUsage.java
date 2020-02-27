@@ -4,16 +4,15 @@ import game.*;
 
 public class ExampleUsage extends GameJava {
 
-	public ExampleUsage(int gameWidth, int gameHeight, int fps, int ups) {
-        super(gameWidth, gameHeight, fps, ups);
+	public ExampleUsage() {
+        super(800,600,60,60);
         new LoopManager(this);
 	}
     
     public int number1 = 563;
 	
 	public static void main(String[] args) throws InterruptedException {
-        new ExampleUsage(800, 700, 60, 60);
-        
+        new ExampleUsage();   
     }
 	
 	// put code here to draw to screen

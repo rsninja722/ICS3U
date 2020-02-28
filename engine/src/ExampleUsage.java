@@ -1,44 +1,23 @@
 import java.awt.Color;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+
+
+/*
+ * TODO:
+ * add input
+ * finish drawing
+ * add utils
+ * add lines
+ * add comments
+ */
 
 import game.*;
+import game.drawing.*;
 
 public class ExampleUsage extends GameJava {
 
     public ExampleUsage() {
         super(800, 600, 60, 60);
-
-        game.drawing.f.addKeyListener(new KeyListener() {
-            
-            public void keyPressed(KeyEvent e) {
-                System.out.println("click");
-                System.out.println(e.getKeyCode() + " " + e.getKeyChar());
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) { System.out.println("click");
-            System.out.println(e.getKeyCode() + " " + e.getKeyChar());}
-
-            @Override
-            public void keyTyped(KeyEvent e) { System.out.println("click");
-            System.out.println(e.getKeyCode() + " " + e.getKeyChar());}
-        });
-        
-        game.drawing.panel.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-            	System.out.println("press: x: "+e.getX()+ " y: " + e.getY() + "code: " + e.getButton());
-            }
-        });
-        game.drawing.panel.addMouseMotionListener(new MouseMotionAdapter() {
-            public void mouseMoved(MouseEvent e) {
-                System.out.println("x: "+e.getX()+ " y: " + e.getY());
-            }
-        });
-        new LoopManager(this);
+        LoopManager.startLoops(this);
 	}
     
     public int number1 = 563;
@@ -49,16 +28,16 @@ public class ExampleUsage extends GameJava {
 	
 	// put code here to draw to screen
 	public void draw() {
-		drawing.rect((int)updateCount, 50 + (int)(Math.sin( Math.toRadians(frameCount*2))*20), 100, 100, Color.YELLOW);
-		drawing.setColor(Color.GREEN);
-		drawing.rect(40,70,30,(int)frameCount);
+		Draw.rect((int)updateCount, 50 + (int)(Math.sin( Math.toRadians(frameCount*2))*20), 100, 100, Color.YELLOW);
+		Draw.setColor(Color.GREEN);
+		Draw.rect(40,70,30,(int)frameCount);
 		
-		drawing.circle(100, 100, (int)frameCount/10);
+		Draw.circle(100, 100, (int)frameCount/10);
 		
-		drawing.circle(150, 150, (int)frameCount/15, Color.MAGENTA);
+		Draw.circle(150, 150, (int)frameCount/15, Color.MAGENTA);
 		
-        drawing.imgIgnoreCutoff(sprites.get("Boss10"),300,200,frameCount/100.0,8,8);
-        drawing.imgIgnoreCutoff(sprites.get("car"),400,400,frameCount/-75.0,6,8);
+        Draw.imgIgnoreCutoff(Sprites.get("Boss10"),300,200,frameCount/100.0,8,8);
+        Draw.imgIgnoreCutoff(Sprites.get("car"),400,400,frameCount/-75.0,6,8);
 	}
 
 	// put code here to update game

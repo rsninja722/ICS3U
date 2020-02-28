@@ -8,14 +8,14 @@ import java.util.HashMap;
 
 public class Sprites {
 	
-	HashMap<String,Sprite> spriteList = new HashMap<String,Sprite>();
+	private static HashMap<String,Sprite> spriteList = new HashMap<String,Sprite>();
     
-    private Path currentRelativePath = Paths.get("");
+    private static Path currentRelativePath = Paths.get("");
     // absolute path of the images folder
-    private String baseDirectory = currentRelativePath.toAbsolutePath().toString() + "\\assets\\images\\";
+    private static String baseDirectory = currentRelativePath.toAbsolutePath().toString() + "\\assets\\images\\";
 	
-	public Sprites() {
-        System.out.println("loading sprites from: " +baseDirectory);
+	public static void loadSprites() {
+        System.out.println("[Sprites] loading sprites from: " + baseDirectory);
         // create file to get all other files in directory
         File dir = new File(baseDirectory);
 
@@ -37,7 +37,7 @@ public class Sprites {
 	}
     
     // returns a sprite from the hash map
-	public Sprite get(String spriteName) {
+	public static Sprite get(String spriteName) {
 		Sprite s = spriteList.get(spriteName);
 		if(s == null) {
 			System.out.println("error: " + spriteName + " not found");

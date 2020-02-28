@@ -1,5 +1,7 @@
 package game.physics;
 
+
+// rectangle object used for collisions and drawing
 public class Rect {
 	public double x;
 	public double y;

@@ -1,5 +1,7 @@
 package game.physics;
 
+
+// point object used for collisions
 public class Point {
 	public double x;
 	public double y;

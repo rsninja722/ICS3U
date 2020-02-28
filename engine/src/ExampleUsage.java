@@ -1,4 +1,6 @@
 import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -7,15 +9,31 @@ import game.*;
 
 public class ExampleUsage extends GameJava {
 
-	public ExampleUsage() {
-        super(800,600,60,60);
+    public ExampleUsage() {
+        super(800, 600, 60, 60);
+
+        game.drawing.f.addKeyListener(new KeyListener() {
+            
+            public void keyPressed(KeyEvent e) {
+                System.out.println("click");
+                System.out.println(e.getKeyCode() + " " + e.getKeyChar());
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) { System.out.println("click");
+            System.out.println(e.getKeyCode() + " " + e.getKeyChar());}
+
+            @Override
+            public void keyTyped(KeyEvent e) { System.out.println("click");
+            System.out.println(e.getKeyCode() + " " + e.getKeyChar());}
+        });
         
-        instance.drawing.panel.addMouseListener(new MouseAdapter() {
+        game.drawing.panel.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-            	System.out.println("press: x: "+e.getX()+ " y: " + e.getY());
+            	System.out.println("press: x: "+e.getX()+ " y: " + e.getY() + "code: " + e.getButton());
             }
         });
-        instance.drawing.panel.addMouseMotionListener(new MouseMotionAdapter() {
+        game.drawing.panel.addMouseMotionListener(new MouseMotionAdapter() {
             public void mouseMoved(MouseEvent e) {
                 System.out.println("x: "+e.getX()+ " y: " + e.getY());
             }
@@ -45,6 +63,7 @@ public class ExampleUsage extends GameJava {
 
 	// put code here to update game
 	public void update() {
+
 		// d.camera.x++;
 	}	
 	

@@ -58,7 +58,7 @@ public class Drawing extends JPanel {
 
         panel = new JPanel();
 
-        gameJavaInstance = GameJava.instance;
+        gameJavaInstance = GameJava.game;
 
         buffer = new BufferedImage(gameJavaInstance.gw, gameJavaInstance.gh, BufferedImage.TYPE_4BYTE_ABGR);
 

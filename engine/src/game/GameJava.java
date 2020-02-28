@@ -10,7 +10,7 @@ import game.drawing.Drawing;
 import game.drawing.Sprites;
 
 public class GameJava {
-    public static GameJava instance;
+    public static GameJava game;
     
     // game width/height
 	public int gw;
@@ -39,10 +39,13 @@ public class GameJava {
 	public boolean running = true;
     
     // loads all sprites from the assets/images folder
-	public Sprites sprites = new Sprites();
+    public Sprites sprites = new Sprites();
+    
+    // get mouse/key input
+    public Input input = new Input();
 	
 	public GameJava(int gameWidth, int gameHeight, int fps, int ups) {
-        instance = this;
+        game = this;
 		init(gameWidth,gameHeight, fps, ups);
 	}
 

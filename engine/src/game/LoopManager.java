@@ -41,6 +41,7 @@ public class LoopManager {
 				mainGameClass.update();
                 lastUpdateTime = currentTime;
                 GameJava.updateCount++;
+                Input.manageInput();
 			}
 			
 		}

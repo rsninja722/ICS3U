@@ -7,6 +7,11 @@ public class Physics {
 		double one = (x2 - x1);
 		double two = (y2 - y1);
 		return Math.sqrt((one * one) + (two * two));
+    }
+    public static double dist(Point point1, Point point2) {
+		double one = (point2.x - point1.x);
+		double two = (point2.y - point1.y);
+		return Math.sqrt((one * one) + (two * two));
 	}
 
 	// circle on circle

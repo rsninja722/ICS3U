@@ -31,7 +31,7 @@ public class Draw extends JPanel {
     private static int dify = 0;
 
     // 0 = translations, 1 = adding scaling, 2 = adding rotations
-    private static int drawingMode = 0;
+    public static int drawingMode = 0;
 
     // limit for when to stop drawing
     private static int drawLimitLeft;
@@ -192,8 +192,8 @@ public class Draw extends JPanel {
             g2.setTransform(t);
         }
 
-        // f.pack();
-//        System.out.println(p.getWidth());
+        GameJava.gw = panel.getWidth();
+        GameJava.gh = panel.getHeight();
 
         canvas.clearRect(0, 0, buffer.getWidth(), buffer.getHeight());
     }

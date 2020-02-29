@@ -14,6 +14,12 @@ public class LoopManager {
     public static double nanosPerUpdate;
     private static double lastUpdateTime = System.nanoTime();
 
+    // fps counting
+    private static double fpsCounter = 0;
+    private static double timeSinceLastSecond = System.nanoTime();
+
+    public static double averageFps = 0;
+
     public static void startLoops(GameJava mainGameObject) {
         System.out.println("[LoopManager] starting loops with: " + mainGameObject.toString());
         mainGameClass = mainGameObject;
@@ -24,7 +30,13 @@ public class LoopManager {
 		while(GameJava.running) {
 			
 			// drawing
-			double currentTime = System.nanoTime();
+            double currentTime = System.nanoTime();
+            if(currentTime - timeSinceLastSecond >= nanosecondsPerSecond) {
+                averageFps = fpsCounter;
+                fpsCounter = 0;
+                timeSinceLastSecond = currentTime;
+                System.out.println(averageFps);
+            }
 			if(currentTime - lastDrawTime >= nanosPerFrame) {
                 synchronized(Draw.panel) {
                 	Draw.preRender();
@@ -32,16 +44,19 @@ public class LoopManager {
                     Draw.render();
                 }
 				lastDrawTime = currentTime;
-				GameJava.frameCount++;
+                GameJava.frameCount++;
+                fpsCounter++;
 			}
 			
 			// updating
 			currentTime = System.nanoTime();
 			if(currentTime - lastUpdateTime >= nanosPerUpdate) {
+                if(Input.keyClick(KeyCodes.F11)) {Draw.toggleFullSreen();}
+                Input.setMousePosition((int)Input.rawMousePos.x,(int)Input.rawMousePos.y);
 				mainGameClass.update();
                 lastUpdateTime = currentTime;
                 GameJava.updateCount++;
-                Input.manageInput();
+                Input.handleHolding();
 			}
 			
 		}

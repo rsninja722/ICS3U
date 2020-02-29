@@ -24,27 +24,7 @@ public class Input {
     public static void init() {
         System.out.println("[Input] initializing");
 
-        // Initialize input arrays 
-        for(int i=0;i<mouseInputs.length;i++) {
-            mouseInputs[i] = 0;
-        }
-        for(int i=0;i<keyInputs.length;i++) {
-        	keyInputs[i] = 0;
-        }
-
-        // key Presses
-        Draw.frame.addKeyListener(new KeyListener() {
-        	 @Override
-            public void keyPressed(KeyEvent e) {
-        		 keyInputs[e.getKeyCode()] = 2;
-            }
-            @Override
-            public void keyReleased(KeyEvent e) { 
-            	keyInputs[e.getKeyCode()] = 0;
-        	}
-			@Override
-			public void keyTyped(KeyEvent e) {}
-        });
+        initKeys();
         
         // mouse presses
         Draw.panel.addMouseListener(new MouseAdapter() {
@@ -60,20 +40,43 @@ public class Input {
         Draw.panel.addMouseMotionListener(new MouseMotionAdapter() {
         	@Override
             public void mouseMoved(MouseEvent e) {
-                setMousePosition(e.getX(), e.getY());
+                rawMousePos.x = e.getX();
+                rawMousePos.y = e.getY();
             }
         	@Override
             public void mouseDragged(MouseEvent e) {
-                setMousePosition(e.getX(), e.getY());
+                rawMousePos.x = e.getX();
+                rawMousePos.y = e.getY();
             }
         });
-            
+
+        // Initialize input array 
+        for(int i=0;i<mouseInputs.length;i++) {
+            mouseInputs[i] = 0;
+        }
     }
 
-    private static void setMousePosition(int x,int y) {
-        rawMousePos.x = x;
-        rawMousePos.y = y;
+    public static void initKeys() {
+        Draw.frame.addKeyListener(new KeyListener() {
+            @Override
+           public void keyPressed(KeyEvent e) {
+                keyInputs[e.getKeyCode()] = 2;
+           }
+           @Override
+           public void keyReleased(KeyEvent e) { 
+               keyInputs[e.getKeyCode()] = 0;
+           }
+           @Override
+           public void keyTyped(KeyEvent e) {}
+        });
 
+        // Initialize input array 
+        for(int i=0;i<keyInputs.length;i++) {
+            keyInputs[i] = 0;
+        }
+    }
+
+    public static void setMousePosition(int x,int y) {
         if(Draw.drawingMode==0) {
             mousePos.x = x-Camera.x;
             mousePos.y = y-Camera.y;
@@ -97,7 +100,7 @@ public class Input {
     }
 
     // needs to be called every cycle to make sure clicks are registered properly 
-    public static void manageInput() {
+    public static void handleHolding() {
         for(int i=0;i<mouseInputs.length;i++) {
             if(mouseInputs[i] == 2) {
                 mouseInputs[i] = 1;

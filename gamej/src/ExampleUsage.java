@@ -3,11 +3,14 @@ import java.awt.Color;
 
 /*
  * TODO:
- * input drag tracking, focus loss, keys
- * finish drawing
+ * focus loss
  * add utils
  * add lines
- * add comments
+ * text
+ * 
+ * add sounds
+ * set name and icon
+ * javadoc comments
  */
 
 import game.*;
@@ -16,10 +19,8 @@ import game.drawing.*;
 public class ExampleUsage extends GameJava {
 
     public ExampleUsage() {
-        super(800, 600, 60, 60);
+        super(800, 600, 600, 60);
 	}
-    
-    public int number1 = 563;
 	
 	public static void main(String[] args) throws InterruptedException {
         new ExampleUsage();   
@@ -27,6 +28,12 @@ public class ExampleUsage extends GameJava {
 	
 	// put code here to draw to screen
 	public void draw() {
+        Sprite boss = Sprites.get("Boss10");
+        for(int y =0;y<gh;y+=40) {
+            for(int x=0;x<gw;x+=40) {
+                Draw.img(boss,x+10,y,(x+y)/(y+1) + frameCount/25.0,1);
+            }    
+        }
 		Draw.rect((int)updateCount, 50 + (int)(Math.sin( Math.toRadians(frameCount*2))*20), 100, 100, Color.YELLOW);   
         if(Input.mouseDown(0)) {
             Draw.setColor(Color.GREEN);
@@ -39,14 +46,22 @@ public class ExampleUsage extends GameJava {
 		
 		Draw.circle((int)Input.mousePos.x, (int)Input.mousePos.y, (int)frameCount/15, Color.MAGENTA);
 		
-        Draw.imgIgnoreCutoff(Sprites.get("Boss10"),300,200,frameCount/100.0,8,8);
-        Draw.imgIgnoreCutoff(Sprites.get("car"),400,400,frameCount/-75.0,6,8);
+        Draw.imgIgnoreCutoff(Sprites.get("Boss10"),300,200,frameCount/100.0,8);
+        Draw.imgIgnoreCutoff(Sprites.get("car"),400,400,frameCount/-75.0,3);
+        
 	}
 
 	// put code here to update game
 	public void update() {
-        if(Input.mouseClick(0)) {System.out.println("left mouse button clicked");}
-        if(Input.keyClick(38)) {System.out.println("up");}
-        if(Input.keyClick(KeyCodes.LEFT)) {System.out.println("left");}
+        if(Input.keyDown(KeyCodes.LEFT)) {Camera.move(-5,0);}
+        if(Input.keyDown(KeyCodes.RIGHT)) {Camera.move(5,0);}
+        if(Input.keyDown(KeyCodes.UP)) {Camera.move(0,-5);}
+        if(Input.keyDown(KeyCodes.DOWN)) {Camera.move(0,5);}
+
+        if(Input.keyClick(KeyCodes.EQUALS)) {Camera.zoom+=0.5;}
+        if(Input.keyClick(KeyCodes.MINUS)) {Camera.zoom-=0.5;}
+
+        if(Input.keyDown(KeyCodes.Q)) {Camera.angle-=0.01;}
+        if(Input.keyDown(KeyCodes.E)) {Camera.angle+=0.01;}
 	}	
 }

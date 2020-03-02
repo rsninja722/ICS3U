@@ -29,6 +29,8 @@ public class LoopManager {
 
 		nanosPerFrame = nanosecondsPerSecond / GameJava.framePerSecond;
 		nanosPerUpdate = nanosecondsPerSecond / GameJava.updatesPerSecond;
+		
+		mainGameClass.setUp();
 
 		while (GameJava.running) {
 			// updating

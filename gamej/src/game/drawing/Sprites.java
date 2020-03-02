@@ -31,9 +31,33 @@ public class Sprites {
             String name = children[i];
 
             // if it is a portable network graphic, create a sprite with the image, and add it to the hashmap
-            if (name.endsWith(".png")) {
+            if (name.endsWith(".png") || name.endsWith(".jpg")) {
                 String spriteName = name.substring(0, name.indexOf("."));
                 spriteList.put(spriteName, new Sprite(imagesDirectory + name));
+            } else {
+            	loadFromDirectory(imagesDirectory + name + "\\" );
+            }
+            
+        }
+    }
+    
+    private static void loadFromDirectory(String path) {
+    	File dir = new File(path);
+
+        // get array of other files
+        String[] children = dir.list();
+        
+        System.out.println(Arrays.toString(children));
+        
+        for (int i = 0; i < children.length; i++) {
+            String name = children[i];
+
+            // if it is a portable network graphic, create a sprite with the image, and add it to the hashmap
+            if (name.endsWith(".png") || name.endsWith(".jpg")) {
+                String spriteName = name.substring(0, name.indexOf("."));
+                spriteList.put(spriteName, new Sprite(path + name));
+            } else {
+            	loadFromDirectory(path + name + "\\");
             }
         }
     }

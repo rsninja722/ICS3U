@@ -90,4 +90,9 @@ public class GameJava {
     public void update() {
         System.out.println("no update method found in the main game file");
     }
+    
+    // default setUp
+    public void setUp() {
+    	System.out.println("called default setup");
+    }
 }

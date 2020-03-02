@@ -1,12 +1,16 @@
 package game.physics;
 
-
-// point object used for collisions
+/** circle object used for physics */
 public class Point {
-	public double x;
-	public double y;
-	
-	public Point(double x,double y) {
+	public int x;
+	public int y;
+    
+    /**
+     * Creates a new Point object at x,y that can be used in physics 
+     * @param x
+     * @param y
+     */
+	public Point(int x,int y) {
 		this.x = x;
 		this.y = y;
 	}

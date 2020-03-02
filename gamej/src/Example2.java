@@ -16,7 +16,7 @@ public class Example2 extends GameJava {
     }
 	
 	public void draw() {
-		Draw.rect((int)updateCount, 50 + (int)(Math.sin( Math.toRadians(frameCount*2))*20), 100, 100, Color.YELLOW);
+		Draw.rect((int)updateCount, 50 + (int)(Math.sin( Math.toRadians(frameCount*2))*20), 100, 100);
 		Draw.setColor(Color.GREEN);
 		Draw.rect(40,70,30,(int)frameCount);
     }

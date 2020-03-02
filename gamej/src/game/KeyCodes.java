@@ -3,7 +3,8 @@ package game;
 import java.util.HashMap;
 import java.util.Map;
 
-// from https://github.com/scijava/scijava-common/blob/master/src/main/java/org/scijava/input/KeyCode.java
+// credit: https://github.com/scijava/scijava-common/blob/master/src/main/java/org/scijava/input/KeyCode.java
+/** enemuerator for key codes used in Input */
 public enum KeyCodes {
 
 	/** Enter (a.k.a. Return). */
@@ -528,39 +529,6 @@ public enum KeyCodes {
 
 	/** Input method on/off key. */
 	INPUT_METHOD_ON_OFF(0x0107),
-
-	/** Cut (Sun keyboard). */
-	CUT(0xFFD1),
-
-	/** Copy (Sun keyboard). */
-	COPY(0xFFCD),
-
-	/** Paste (Sun keyboard). */
-	PASTE(0xFFCF),
-
-	/** Undo (Sun keyboard). */
-	UNDO(0xFFCB),
-
-	/** Again (Sun keyboard). */
-	AGAIN(0xFFC9),
-
-	/** Find (Sun keyboard). */
-	FIND(0xFFD0),
-
-	/** Props (Sun keyboard). */
-	PROPS(0xFFCA),
-
-	/** Stop (Sun keyboard). */
-	STOP(0xFFC8),
-
-	/** Compose function key. */
-	COMPOSE(0xFF20),
-
-	/** AltGraph function key. */
-	ALT_GRAPH(0xFF7E),
-
-	/** Begin key. */
-	BEGIN(0xFF58),
 
 	/** Unknown code. */
 	UNDEFINED(0x0);

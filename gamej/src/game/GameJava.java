@@ -3,6 +3,21 @@ package game;
 import game.drawing.Draw;
 import game.drawing.Sprites;
 
+import java.awt.Color;
+import java.nio.file.Paths;
+
+/*
+ * TODO:
+ * line collition
+ * recurseive folder opening for image loading
+ * text wrapping
+ * scrolling
+ * add sounds
+ * set name and icon
+ * make fullscreen not lag
+ */
+
+
 public class GameJava {
     public static GameJava game;
     
@@ -14,13 +29,26 @@ public class GameJava {
 	public static int framePerSecond = 60;
 	public static int updatesPerSecond = 60;
     
-    // numbers that increment every frame 
+    /** value that increments every frame */
 	public static long frameCount = 0;
-	public static long updateCount = 0;
+    /** value that increments every update */
+    public static long updateCount = 0;
     
-    // if set to false, game will stop running
-	public static boolean running = true;
-	
+    /** if set to false, game will stop running */
+    public static boolean running = true;
+
+    /** title that displays in the top frame bar */
+    public static String frameTitle = "game title";
+    
+    // base file directory
+    public static String baseDirectory = Paths.get("").toAbsolutePath().toString() + "\\assets";
+    
+    /**
+     * @param gameWidth window width
+     * @param gameHeight window height
+     * @param fps frames per second
+     * @param ups updates per second
+     */
 	public GameJava(int gameWidth, int gameHeight, int fps, int ups) {
         game = this;
         init(gameWidth,gameHeight, fps, ups);
@@ -44,10 +72,21 @@ public class GameJava {
         Input.init();
     }
     
+    // default draw
     public void draw() {
-        System.out.println("no draw method found in the main game file");
+        Draw.setFontSize(2);
+        Draw.setColor(Color.BLACK);
+        Draw.text("no draw method found in the main game file", 100, 50);
     }
 
+    // default absolute draw
+    public void absoluteDraw() {
+        Draw.setFontSize(2);
+        Draw.setColor(Color.BLACK);
+        Draw.text("no absolute draw method found in the main game file", 100, 100);
+    }
+
+    // default update
     public void update() {
         System.out.println("no update method found in the main game file");
     }

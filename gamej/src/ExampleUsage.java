@@ -1,28 +1,17 @@
 import java.awt.Color;
 
-
-/*
- * TODO:
- * focus loss
- * add utils
- * add lines
- * text
- * 
- * add sounds
- * set name and icon
- * javadoc comments
- */
-
 import game.*;
 import game.drawing.*;
+import game.physics.*;
 
 public class ExampleUsage extends GameJava {
 
     public ExampleUsage() {
-        super(800, 600, 600, 60);
+        super(800, 600, 60, 60);
 	}
 	
 	public static void main(String[] args) throws InterruptedException {
+        frameTitle = "example";
         new ExampleUsage();   
     }
 	
@@ -31,10 +20,12 @@ public class ExampleUsage extends GameJava {
         Sprite boss = Sprites.get("Boss10");
         for(int y =0;y<gh;y+=40) {
             for(int x=0;x<gw;x+=40) {
-                Draw.img(boss,x+10,y,(x+y)/(y+1) + frameCount/25.0,1);
+                Draw.image(boss,x,y);
             }    
         }
-		Draw.rect((int)updateCount, 50 + (int)(Math.sin( Math.toRadians(frameCount*2))*20), 100, 100, Color.YELLOW);   
+        
+        Draw.setColor(Color.YELLOW);
+		Draw.rect((int)updateCount, 50 + (int)(Math.sin( Math.toRadians(frameCount*2))*20), 100, 100);   
         if(Input.mouseDown(0)) {
             Draw.setColor(Color.GREEN);
         } else {
@@ -43,12 +34,23 @@ public class ExampleUsage extends GameJava {
 		Draw.rect(40,70,30,(int)frameCount);
 		
 		Draw.circle(100, 100, (int)frameCount/10);
-		
-		Draw.circle((int)Input.mousePos.x, (int)Input.mousePos.y, (int)frameCount/15, Color.MAGENTA);
-		
-        Draw.imgIgnoreCutoff(Sprites.get("Boss10"),300,200,frameCount/100.0,8);
-        Draw.imgIgnoreCutoff(Sprites.get("car"),400,400,frameCount/-75.0,3);
         
+        Draw.setColor(Color.MAGENTA);
+		Draw.circle((int)Input.mousePos.x, (int)Input.mousePos.y, 10);
+		Utils.putInDebugMenu("Angle", Utils.pointTo(new Point(300,200), new Point(Input.mousePos.x,Input.mousePos.y)));
+        Draw.imageIgnoreCutoff(Sprites.get("Boss10"),300,200,Utils.pointTo(new Point(300,200), new Point(Input.mousePos.x,Input.mousePos.y)),8);
+        Draw.imageIgnoreCutoff(Sprites.get("car"),400,400,frameCount/-75.0,3);
+        Draw.setLineWidth(10);
+        Draw.line(new Point(300,200), new Point(Input.mousePos.x,Input.mousePos.y));
+
+        Draw.setLineWidth(5);
+        Draw.setColor(new Color(0.0f,1.0f,1.0f,0.6f));
+
+        Draw.line(40, 50, 550, 600);
+
+        Draw.setFontSize(4);
+        Draw.setColor(Color.BLACK);
+        Draw.text("testt", 100, 100);
 	}
 
 	// put code here to update game
@@ -63,5 +65,11 @@ public class ExampleUsage extends GameJava {
 
         if(Input.keyDown(KeyCodes.Q)) {Camera.angle-=0.01;}
         if(Input.keyDown(KeyCodes.E)) {Camera.angle+=0.01;}
-	}	
+    }	
+    
+    @Override
+    public void absoluteDraw() {
+        Draw.text("absolute", 10, 26);
+        Draw.rect(new Rect(400,300,30,50));
+    }
 }

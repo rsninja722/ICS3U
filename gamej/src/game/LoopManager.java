@@ -47,7 +47,9 @@ public class LoopManager {
 				// calculate mouse position in world
 				Input.setMousePosition((int) Input.rawMousePos.x, (int) Input.rawMousePos.y);
 				// reset debug string
-				Utils.debugString.setLength(0);
+                Utils.debugString.setLength(0);
+                // add fps to debug
+                Utils.putInDebugMenu("FPS", LoopManager.averageFps);
 				// call update and reset time
 				mainGameClass.update();
 				lastUpdateTime = currentTime;
@@ -55,8 +57,6 @@ public class LoopManager {
 				GameJava.updateCount++;
 				// set clicked keys to held
 				Input.handleHolding();
-				// add fps to debug
-				Utils.putInDebugMenu("FPS", LoopManager.averageFps);
 			}
 
 			// drawing

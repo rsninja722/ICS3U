@@ -9,7 +9,8 @@ import java.nio.file.Paths;
 /*
  * TODO:
  * line collition
- * recurseive folder opening for image loading
+ * resize prevension and fullscreen option
+ * change loopmanager init
  * text wrapping
  * scrolling
  * add sounds

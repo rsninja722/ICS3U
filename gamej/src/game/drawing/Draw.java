@@ -139,7 +139,7 @@ public class Draw extends JPanel {
      * @param end   {@link game.physics.Point#Point point}
      */
     public static void line(Point start, Point end) {
-        canvas.drawLine(start.x + difx, start.y + dify, end.x + difx, end.y + dify);
+        canvas.drawLine((int)start.x + difx, (int)start.y + dify, (int)end.x + difx, (int)end.y + dify);
     }
 
     /**

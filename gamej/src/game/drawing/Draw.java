@@ -56,16 +56,18 @@ public class Draw extends JPanel {
     public static int drawingMode = 0; // 0 = translations only, 1 = adding scaling, 2 = adding rotations
 
     // limit for when to stop drawing
-    private static int drawLimitLeft;
-    private static int drawLimitRight;
-    private static int drawLimitTop;
-    private static int drawLimitBottom;
+    public static int drawLimitLeft;
+    public static int drawLimitRight;
+    public static int drawLimitTop;
+    public static int drawLimitBottom;
 
     public static boolean absoluteDraw = false; // whether camera should be ignored
 
     public static final GraphicsEnvironment graphicsEnviro = GraphicsEnvironment.getLocalGraphicsEnvironment();
     public static final GraphicsConfiguration graphicsConfig = graphicsEnviro.getDefaultScreenDevice()
             .getDefaultConfiguration();
+    
+    public static int drawCalls = 0;
 
     // __________________________________________ Drawing methods __________________________________________
 
@@ -186,7 +188,7 @@ public class Draw extends JPanel {
 
         canvas.drawImage(spr.img, Math.round(-spr.width / 2), Math.round(-spr.height / 2), null);
 
-        canvas.setTransform(t);
+        canvas.setTransform(t);drawCalls++;
     }
 
     /**
@@ -196,7 +198,7 @@ public class Draw extends JPanel {
      * @param y
      */
     public static void imageIgnoreCutoff(Sprite spr, int x, int y) {
-        canvas.drawImage(spr.img, Math.round(x + difx - (spr.width / 2)), Math.round(y + dify - (spr.height / 2)), null);
+        canvas.drawImage(spr.img, Math.round(x + difx - (spr.width / 2)), Math.round(y + dify - (spr.height / 2)), null);drawCalls++;
     }
 
     /**
@@ -219,7 +221,7 @@ public class Draw extends JPanel {
             canvas.drawImage(spr.img, Math.round(-spr.width / 2), Math.round(-spr.height / 2), null);
 
             canvas.setTransform(t);
-        }
+        drawCalls++;}
     }
 
     /**
@@ -232,7 +234,7 @@ public class Draw extends JPanel {
         int half = spr.drawLimit;
         if ((x + half > drawLimitLeft && x - half < drawLimitRight && y + half > drawLimitTop && y - half < drawLimitBottom) || absoluteDraw) {
             canvas.drawImage(spr.img, Math.round(x + difx - (spr.width / 2)), Math.round(y + dify - (spr.height / 2)), null);
-        }
+        drawCalls++;}
     }
 
     // __________________________________________ methods that should only be used by gamej __________________________________________
@@ -311,7 +313,7 @@ public class Draw extends JPanel {
     }
 
     // sets up buffers
-    public static void preRender() {
+    public static void preRender() {drawCalls=0;absoluteDraw=false;
         // change what buffer is used depending in the camera
         if (Camera.zoom < 1.0f) {
             Camera.zoom = 1.0f;
@@ -367,10 +369,12 @@ public class Draw extends JPanel {
         }
 
         // calculate limits, if image is outside these bounds, it will not draw
-        drawLimitLeft = -Camera.x - (drawingMode == 2 ? sizeDif : 0);
-        drawLimitRight = -Camera.x + maxCvsSize + (drawingMode == 2 ? sizeDif : 0);
-        drawLimitTop = -Camera.y - (drawingMode == 2 ? sizeDif : 0);
-        drawLimitBottom = -Camera.y + maxCvsSize + (drawingMode == 2 ? sizeDif : 0);
+        int limitModifyer = 0;
+        if(drawingMode==2) {limitModifyer=Math.max(buffer2.getHeight(), buffer2.getWidth())-maxCvsSize;}
+        drawLimitLeft = -Camera.x - (drawingMode == 2 ? sizeDif : 0) - limitModifyer;
+        drawLimitRight = -Camera.x + maxCvsSize + (drawingMode == 2 ? sizeDif : 0) + limitModifyer;
+        drawLimitTop = -Camera.y - (drawingMode == 2 ? sizeDif : 0) - limitModifyer;
+        drawLimitBottom = -Camera.y + maxCvsSize + (drawingMode == 2 ? sizeDif : 0) + limitModifyer;
 
         // set the drawing target
         switch (drawingMode) {

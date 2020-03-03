@@ -107,7 +107,7 @@ public class Utils {
      * @param value value to show
      */
     public static void putInDebugMenu(String lable, double value) {
-        debugString.append("[" + lable + "] " + value + "\n");
+        debugString.append("[" + lable + "] " + Math.round(value*1000.0)/1000.0 + "\n");
     }
 
     /**

@@ -29,8 +29,6 @@ public class LoopManager {
 
 		nanosPerFrame = nanosecondsPerSecond / GameJava.framePerSecond;
 		nanosPerUpdate = nanosecondsPerSecond / GameJava.updatesPerSecond;
-		
-		mainGameClass.setUp();
 
 		while (GameJava.running) {
 			// updating
@@ -62,32 +60,31 @@ public class LoopManager {
 			// drawing
 			currentTime = System.nanoTime();
 			if (currentTime - lastDrawTime >= nanosPerFrame) {
-				synchronized (Draw.panel) {
-					// set up buffers
-					Draw.preRender();
-					// draw using camera
-					mainGameClass.draw();
-					Draw.renderCameraMovement();
+				// set up buffers
+				Draw.preRender();
+				// draw using camera
+				mainGameClass.draw();
+				Draw.renderCameraMovement();
 
-					// set offset to 0 and reselect buffer
-					Draw.preAbsoluteRender();
-					// draw without camera
-					mainGameClass.absoluteDraw();
-					// draw debug text
-					if (Utils.debugMode) {
-						String[] debugMessages = new String(Utils.debugString).split("\n");
-						Draw.setFontSize(1);
-						for (int i = 0; i < debugMessages.length; i++) {
-							Draw.setColor(new Color(0.2f, 0.2f, 0.2f, 0.7f));
-							int textW = Draw.getWidthOfText(debugMessages[i]);
-							Draw.rect(textW / 2 + 2, 5 + i * 9, textW + 4, 9);
-							Draw.setColor(Color.WHITE);
-							Draw.text(debugMessages[i], 2, 9 + i * 9);
-						}
+				// set offset to 0 and reselect buffer
+				Draw.preAbsoluteRender();
+				// draw without camera
+				mainGameClass.absoluteDraw();
+				// draw debug text
+				if (Utils.debugMode) {
+					String[] debugMessages = new String(Utils.debugString).split("\n");
+					Draw.setFontSize(1);
+					for (int i = 0; i < debugMessages.length; i++) {
+						Draw.setColor(new Color(0.2f, 0.2f, 0.2f, 0.7f));
+						int textW = Draw.getWidthOfText(debugMessages[i]);
+						Draw.rect(textW / 2 + 2, 5 + i * 9, textW + 4, 9);
+						Draw.setColor(Color.WHITE);
+						Draw.text(debugMessages[i], 2, 9 + i * 9);
 					}
-					// draw buffer to panel
-					Draw.renderToScreen();
 				}
+				// draw buffer to panel
+				Draw.renderToScreen();
+			
 				lastDrawTime = currentTime;
 				// increment count
 				GameJava.frameCount++;

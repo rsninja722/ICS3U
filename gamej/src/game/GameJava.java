@@ -53,7 +53,6 @@ public class GameJava {
 	public GameJava(int gameWidth, int gameHeight, int fps, int ups) {
         game = this;
         init(gameWidth,gameHeight, fps, ups);
-        LoopManager.startLoops(this);
 	}
 
     // calculates frame rate nanosecond speeds and initializes drawing 
@@ -90,10 +89,5 @@ public class GameJava {
     // default update
     public void update() {
         System.out.println("no update method found in the main game file");
-    }
-    
-    // default setUp
-    public void setUp() {
-    	System.out.println("called default setup");
     }
 }

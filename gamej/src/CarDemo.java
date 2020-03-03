@@ -34,45 +34,41 @@ public class CarDemo extends GameJava {
 	
 	public CarDemo() {		
         super(600, 600, 60, 60);
+        // generate track
+ 		System.out.println(track);
+         tilePos = new Point[track.length * 64];
+         trackRects = new Rect[track.length];
+         int tilePosIndex = 0;
+         for(int i=0;i<track.length;i++) {
+             int xCache = track[i][0] * 256;
+             int yCache = track[i][1] * 256;
+             for(int y=0;y<8;y++) {
+                 for(int x=0;x<8;x++) {
+                 	tilePos[tilePosIndex] = new Point(xCache+(x*32),yCache+(y*32));
+                 	tilePosIndex++;
+                 }   
+             }
+
+             trackRects[i] = new Rect(xCache+112,yCache+122,256,256);
+         }
+         
+         // generate wall
+         brickRects = new Rect[bricks.length];
+         for(int i=0;i<bricks.length;i++) {
+             double xCache = bricks[i][0] * 256;
+             double yCache = bricks[i][1] * 256;
+
+             brickRects[i] = new Rect((int)xCache,(int)yCache,128,128);
+         }
+         
+         car = new Car();
+         LoopManager.startLoops(this);
 	}
 	
 	public static void main(String[] args) throws InterruptedException {
         frameTitle = "car demo";
         new CarDemo();   
     }
-    
-    // create track and wall
-	public void setUp() {
-		// generate track
-		System.out.println(track);
-        tilePos = new Point[track.length * 64];
-        trackRects = new Rect[track.length];
-        int tilePosIndex = 0;
-        for(int i=0;i<track.length;i++) {
-            int xCache = track[i][0] * 256;
-            int yCache = track[i][1] * 256;
-            for(int y=0;y<8;y++) {
-                for(int x=0;x<8;x++) {
-                	tilePos[tilePosIndex] = new Point(xCache+(x*32),yCache+(y*32));
-                	tilePosIndex++;
-                }   
-            }
-
-            trackRects[i] = new Rect(xCache+112,yCache+122,256,256);
-        }
-        
-        // generate wall
-        brickRects = new Rect[bricks.length];
-        for(int i=0;i<bricks.length;i++) {
-            double xCache = bricks[i][0] * 256;
-            double yCache = bricks[i][1] * 256;
-
-            brickRects[i] = new Rect((int)xCache,(int)yCache,128,128);
-        }
-        
-        car = new Car();
-	}
-	
 	public void draw() {
         // decide where to draw grass
         int edge = Math.max(gw,gh);
@@ -211,6 +207,11 @@ public class CarDemo extends GameJava {
         Utils.putInDebugMenu("vely", vel.y);
         Utils.putInDebugMenu("x", car.x);
         Utils.putInDebugMenu("y", car.y);
+        Utils.putInDebugMenu("draw calls", Draw.drawCalls);
+        Utils.putInDebugMenu("limit left", Draw.drawLimitLeft);
+        Utils.putInDebugMenu("limit right", Draw.drawLimitRight);
+        Utils.putInDebugMenu("limit bottom", Draw.drawLimitBottom);
+        Utils.putInDebugMenu("limit top", Draw.drawLimitTop);
     }	
     
     // draw car

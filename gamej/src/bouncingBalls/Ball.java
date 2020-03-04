@@ -28,26 +28,31 @@ public class Ball {
 		collider.y += velocity.y;
 	}
 
-	public void ifOnEdgeBounce(int limitLeft, int limitTop, int limitRight, int limitBottom) {
+	public boolean ifOnEdgeBounce(int limitLeft, int limitTop, int limitRight, int limitBottom) {
 		if (collider.x - collider.r < limitLeft && velocity.x < 0) {
-			velocity.x *= -1;
+			velocity.x *= -BouncingBall.entropy;
 			lastCollisionIndex = -1;
+			return true;
 		}
 		if (collider.y - collider.r < limitTop && velocity.y < 0) {
-			velocity.y *= -1;
+			velocity.y *= -BouncingBall.entropy;
 			lastCollisionIndex = -1;
+			return true;
 		}
 		if (collider.x + collider.r > limitRight && velocity.x > 0) {
-			velocity.x *= -1;
+			velocity.x *= -BouncingBall.entropy;
 			lastCollisionIndex = -1;
+			return true;
 		}
 		if (collider.y + collider.r > limitBottom && velocity.y > 0) {
-			velocity.y *= -1;
+			velocity.y *= -BouncingBall.entropy;
 			lastCollisionIndex = -1;
+			return true;
 		}
+		return false;
 	}
 
-	public void bounceOffOtherBalls(Ball[] ballArray, int thisIndex) {
+	public boolean bounceOffOtherBalls(Ball[] ballArray, int thisIndex) {
 		// go through balls
 		for (int i = 0; i < ballArray.length; i++) {
 			// if it isn't itself and the ball hasn't collided already
@@ -57,16 +62,30 @@ public class Ball {
 					double thisVelocityX = this.velocity.x;
 					double thisVelocityY = this.velocity.y;
 
-					this.velocity.x = ballArray[i].velocity.x;
-					this.velocity.y = ballArray[i].velocity.y;
+					this.velocity.x = ballArray[i].velocity.x * BouncingBall.entropy;
+					this.velocity.y = ballArray[i].velocity.y * BouncingBall.entropy;
 
-					ballArray[i].velocity.x = thisVelocityX;
-					ballArray[i].velocity.y = thisVelocityY;
+					ballArray[i].velocity.x = thisVelocityX * BouncingBall.entropy;
+					ballArray[i].velocity.y = thisVelocityY * BouncingBall.entropy;
 					// make this ball not collide again this frame, and not hit ball i until another
 					// collision
 					this.collidedThisFrame = true;
 					lastCollisionIndex = i;
-					break;
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public void fall() {
+		if(lastCollisionIndex != -1 && Math.abs(velocity.x) < 0.5) {
+			if(BouncingBall.balls[lastCollisionIndex].collider.y > collider.y) {
+				if(BouncingBall.balls[lastCollisionIndex].collider.x > collider.x) {
+					velocity.x -= 0.11;
+				}
+				if(BouncingBall.balls[lastCollisionIndex].collider.x < collider.x) {
+					velocity.x += 0.11;
 				}
 			}
 		}

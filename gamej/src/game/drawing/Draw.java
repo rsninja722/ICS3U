@@ -327,8 +327,8 @@ public class Draw extends JPanel {
         }
 
         // set size of panel to fit frame
-        int w = frame.getWidth();
-        int h = frame.getHeight();
+        int w = frame.getWidth() - frame.getInsets().right - frame.getInsets().left;
+        int h = frame.getHeight() - frame.getInsets().top - frame.getInsets().bottom;
         panel.setSize(w, h);
         GameJava.gw = panel.getWidth();
         GameJava.gh = panel.getHeight();

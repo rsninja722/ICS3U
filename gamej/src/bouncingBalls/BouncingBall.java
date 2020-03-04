@@ -9,8 +9,11 @@ import bouncingBalls.Ball;
 
 public class BouncingBall extends GameJava {
 
-    static Ball[] balls = new Ball[50];
+    static Ball[] balls = new Ball[250];
     int ballIndex = 0;
+    
+    static final double entropy = 0.95;
+    static final double gravity = 0.1;
 
     public BouncingBall() {
         super(800, 600, 60, 60);
@@ -27,9 +30,16 @@ public class BouncingBall extends GameJava {
 	
 	@Override
 	public void draw() {
+		Draw.setColor(Color.RED);
         for(int i=0;i<balls.length;i++) {
             Draw.circle(balls[i].collider);
         }
+        Draw.setColor(Color.BLUE);
+        Draw.rect(gw/2,0,gw,1);
+        Draw.rect(gw/2,gh,gw,1);
+        Draw.rect(0,gh/2,1,gh);
+        Draw.rect(gw,gh/2,1,gh);
+        
     }
     
     public static boolean hittingOtherBalls(Circle circle,int index) {
@@ -47,10 +57,36 @@ public class BouncingBall extends GameJava {
 	public void update() {
         for(int i=0;i<balls.length;i++) {
 			balls[i].collidedThisFrame = false;
-			balls[i].move();
-			balls[i].ifOnEdgeBounce(0,0, gw, gh);
-			balls[i].bounceOffOtherBalls(balls, i);
+			
+			double oldVelX = balls[i].velocity.x;
+			balls[i].collider.x += balls[i].velocity.x;
+			
+			if(balls[i].ifOnEdgeBounce(0,0, gw, gh) || balls[i].bounceOffOtherBalls(balls, i)) {
+				balls[i].collider.x -= oldVelX;
+			}
+			
+			double oldVelY = balls[i].velocity.y;
+			balls[i].collider.y += balls[i].velocity.y;
+			
+			if(balls[i].ifOnEdgeBounce(0,0, gw, gh) || balls[i].bounceOffOtherBalls(balls, i)) {
+				balls[i].collider.y -= oldVelY;
+			}
+			
+			balls[i].fall();
+			
+//			balls[i].velocity.x *= 0.99;
+//			balls[i].velocity.y *= 0.99;
+			
+			balls[i].velocity.y += gravity;
+			
+			
 		}
+        
+        if(Input.keyClick(KeyCodes.ENTER)) {
+        	for(int i=0;i<balls.length;i++) {
+                balls[i] = new Ball(i);
+            }
+        }
 
         
         if(Input.keyDown(KeyCodes.LEFT)) {Camera.move((int)(-5/Camera.zoom),0);}

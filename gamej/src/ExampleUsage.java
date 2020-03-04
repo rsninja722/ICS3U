@@ -8,6 +8,7 @@ public class ExampleUsage extends GameJava {
 
     public ExampleUsage() {
         super(800, 600, 60, 60);
+        LoopManager.startLoops(this);
 	}
 	
 	public static void main(String[] args) throws InterruptedException {

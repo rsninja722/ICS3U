@@ -1,25 +1,19 @@
 package bouncingBalls;
 
 import java.awt.Color;
+import java.awt.RenderingHints;
 
 import game.*;
 import game.drawing.*;
-import game.physics.*;
 import bouncingBalls.Ball;
 
 public class BouncingBall extends GameJava {
-
-    static Ball[] balls = new Ball[250];
-    int ballIndex = 0;
-    
-    static final double entropy = 0.95;
-    static final double gravity = 0.1;
+    static final int ballCount = 200;
+    int index = 0;
 
     public BouncingBall() {
         super(800, 600, 60, 60);
-        for(int i=0;i<balls.length;i++) {
-            balls[i] = new Ball(i);
-        }
+        Ball.makeBalls(ballCount);
         LoopManager.startLoops(this);
 	}
 	
@@ -31,9 +25,12 @@ public class BouncingBall extends GameJava {
 	@Override
 	public void draw() {
 		Draw.setColor(Color.RED);
-        for(int i=0;i<balls.length;i++) {
-            Draw.circle(balls[i].collider);
-        }
+		if(Draw.canvas != null) {
+			Draw.canvas.setRenderingHint(
+                RenderingHints.KEY_ANTIALIASING, 
+                RenderingHints.VALUE_ANTIALIAS_ON);
+		}
+		Ball.drawBalls();
         Draw.setColor(Color.BLUE);
         Draw.rect(gw/2,0,gw,1);
         Draw.rect(gw/2,gh,gw,1);
@@ -42,50 +39,26 @@ public class BouncingBall extends GameJava {
         
     }
     
-    public static boolean hittingOtherBalls(Circle circle,int index) {
-        for(int j=0;j<balls.length;j++) {
-            if(j!=index && balls[j] != null) {
-                if(Physics.circlecircle(circle, balls[j].collider)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
+    
 
 	@Override
 	public void update() {
-        for(int i=0;i<balls.length;i++) {
-			balls[i].collidedThisFrame = false;
-			
-			double oldVelX = balls[i].velocity.x;
-			balls[i].collider.x += balls[i].velocity.x;
-			
-			if(balls[i].ifOnEdgeBounce(0,0, gw, gh) || balls[i].bounceOffOtherBalls(balls, i)) {
-				balls[i].collider.x -= oldVelX;
+		Ball.moveBalls();
+		
+		if(Input.mouseClick(0)) {
+			Ball.balls[index] = new Ball(Input.mousePos.x,Input.mousePos.y);
+			index++;
+			if(index == Ball.balls.length) {
+				index = 0;
 			}
-			
-			double oldVelY = balls[i].velocity.y;
-			balls[i].collider.y += balls[i].velocity.y;
-			
-			if(balls[i].ifOnEdgeBounce(0,0, gw, gh) || balls[i].bounceOffOtherBalls(balls, i)) {
-				balls[i].collider.y -= oldVelY;
-			}
-			
-			balls[i].fall();
-			
-//			balls[i].velocity.x *= 0.99;
-//			balls[i].velocity.y *= 0.99;
-			
-			balls[i].velocity.y += gravity;
-			
-			
+		}
+		
+		if(Input.keyClick(KeyCodes.A)) {
+			Ball.gravity *= -1;
 		}
         
         if(Input.keyClick(KeyCodes.ENTER)) {
-        	for(int i=0;i<balls.length;i++) {
-                balls[i] = new Ball(i);
-            }
+        	Ball.makeBalls(ballCount);
         }
 
         

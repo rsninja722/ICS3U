@@ -6,13 +6,17 @@ import java.awt.RenderingHints;
 import game.*;
 import game.drawing.*;
 import bouncingBalls.Ball;
+import bouncingBalls.Block;
 
 public class BouncingBall extends GameJava {
     static final int ballCount = 200;
+    static final int blockCount = 20;
+    
     int index = 0;
 
     public BouncingBall() {
         super(800, 600, 60, 60);
+        Block.makeBlocks(blockCount);
         Ball.makeBalls(ballCount);
         LoopManager.startLoops(this);
 	}
@@ -32,11 +36,11 @@ public class BouncingBall extends GameJava {
 		}
 		Ball.drawBalls();
         Draw.setColor(Color.BLUE);
+        Block.drawBlocks();
         Draw.rect(gw/2,0,gw,1);
         Draw.rect(gw/2,gh,gw,1);
         Draw.rect(0,gh/2,1,gh);
-        Draw.rect(gw,gh/2,1,gh);
-        
+        Draw.rect(gw,gh/2,1,gh);  
     }
     
     
@@ -58,6 +62,7 @@ public class BouncingBall extends GameJava {
 		}
         
         if(Input.keyClick(KeyCodes.ENTER)) {
+        	Block.makeBlocks(blockCount);
         	Ball.makeBalls(ballCount);
         }
 

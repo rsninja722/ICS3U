@@ -80,7 +80,7 @@ public class Draw extends JPanel {
     }
 
     /**
-     * draws a rectrangle centered on x,y
+     * draws a rectangle centered on x,y
      * @param x x position
      * @param y y position
      * @param w width
@@ -89,13 +89,32 @@ public class Draw extends JPanel {
     public static void rect(int x, int y, int w, int h) {
         canvas.fillRect(x - (w / 2) + difx, y - (h / 2) + dify, w, h);
     }
+    
+    /**
+     * draws a rectangle outline centered on x,y
+     * @param x x position
+     * @param y y position
+     * @param w width
+     * @param h height
+     */
+    public static void rectOutline(int x, int y, int w, int h) {
+        canvas.drawRect(x - (w / 2) + difx, y - (h / 2) + dify, w, h);
+    }
 
     /**
-     * draws a rectrangle centered on x,y
+     * draws a rectangle centered on x,y
      * @param rectangle {@link game.physics.Rect#Rect rectangle}
      */
     public static void rect(Rect rectangle) {
         canvas.fillRect((int) rectangle.x - (rectangle.w / 2) + difx, (int) rectangle.y - (rectangle.h / 2) + dify, rectangle.w, rectangle.h);
+    }
+    
+    /**
+     * draws a rectangle outline centered on x,y
+     * @param rectangle {@link game.physics.Rect#Rect rectangle}
+     */
+    public static void rectOutline(Rect rectangle) {
+        canvas.drawRect((int) rectangle.x - (rectangle.w / 2) + difx, (int) rectangle.y - (rectangle.h / 2) + dify, rectangle.w, rectangle.h);
     }
 
     /**
@@ -107,6 +126,16 @@ public class Draw extends JPanel {
     public static void circle(int x, int y, int r) {
         canvas.fillOval(x - r + difx, y - r + dify, r * 2, r * 2);
     }
+    
+    /**
+     * draws circle outline centered on x,y
+     * @param x x position
+     * @param y y position
+     * @param r radius
+     */
+    public static void circleOutline(int x, int y, int r) {
+        canvas.drawOval(x - r + difx, y - r + dify, r * 2, r * 2);
+    }
 
     /**
      * draws circle centered on x,y
@@ -114,6 +143,14 @@ public class Draw extends JPanel {
      */
     public static void circle(Circle circle) {
         canvas.fillOval((int) circle.x - circle.r + difx, (int) circle.y - circle.r + dify, circle.r * 2, circle.r * 2);
+    }
+    
+    /**
+     * draws circle outline centered on x,y
+     * @param circle {@link game.physics.Circle#Circle circle}
+     */
+    public static void circleOutline(Circle circle) {
+        canvas.drawOval((int) circle.x - circle.r + difx, (int) circle.y - circle.r + dify, circle.r * 2, circle.r * 2);
     }
 
     /**

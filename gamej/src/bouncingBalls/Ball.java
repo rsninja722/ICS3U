@@ -5,6 +5,9 @@ import game.drawing.Camera;
 import game.drawing.Draw;
 import game.physics.*;
 import bouncingBalls.BouncingBall;
+
+import java.awt.Color;
+
 import bouncingBalls.Block;
 
 public class Ball {
@@ -14,6 +17,8 @@ public class Ball {
 	Double angle;
 	int lastCollisionIndex = -1;
 	boolean collidedThisFrame = false;
+	
+	Color color;
 
 	static final double entropy = 0.975;
 	static double gravity = 0.2;
@@ -24,8 +29,9 @@ public class Ball {
 		collider = new Circle(Utils.rand(radius, GameJava.gw - radius), Utils.rand(radius, GameJava.gh - radius),
 				radius);
 		angle = Math.toRadians(Utils.rand(0, 359));
-		double speed = Utils.rand(10, 150) / 10;
+		double speed = Utils.rand(10, 30) / 10;
 		velocity = new Point(Math.sin(angle) * speed, Math.cos(angle) * speed);
+		color = Color.getHSBColor((float)Utils.rand(0, 100)/100, 1.0f, 0.8f);
 	}
 
 	public void preventOverlays(int index) {
@@ -40,6 +46,7 @@ public class Ball {
 		collider = new Circle(x, y, radius);
 		angle = Math.toRadians(90);
 		velocity = new Point(Math.sin(angle), Math.cos(angle));
+		color = Color.getHSBColor((float)Utils.rand(0, 100)/100, 1.0f, 0.8f);
 	}
 
 	// generate
@@ -55,10 +62,20 @@ public class Ball {
 	public static void drawBalls() {
 		for (int i = 0; i < balls.length; i++) {
 			if (balls[i] != null) {
+				Draw.setColor(balls[i].color);
+				int last = balls[i].lastCollisionIndex;
+				last = last < 0 ? i : last;
+				Draw.line((int)balls[i].collider.x, (int)balls[i].collider.y, (int)balls[last].collider.x, (int)balls[last].collider.y);
+			}
+		}
+		for (int i = 0; i < balls.length; i++) {
+			if (balls[i] != null) {
+				Draw.setColor(balls[i].color);
 				Draw.circle(balls[i].collider);
 			}
 		}
 	}
+	
 	
 	// move
 	public static void moveBalls() {
@@ -128,18 +145,18 @@ public class Ball {
 		velocity.x *= 0.99;
 		velocity.y *= 0.99;
 
-		if (lastCollisionIndex != -1) {
-			Circle last = balls[lastCollisionIndex].collider;
-			if (last.y > collider.y) {
-				if (Physics.dist(collider.x, collider.y, last.x, last.y) < (collider.r + last.r) * 1.5) {
-					if (last.x > collider.x) {
-						velocity.x -= 0.1;
-					} else {
-						velocity.x += 0.1;
-					}
-				}
-			}
-		}
+//		if (lastCollisionIndex != -1) {
+//			Circle last = balls[lastCollisionIndex].collider;
+//			if (last.y > collider.y) {
+//				if (Physics.dist(collider.x, collider.y, last.x, last.y) < (collider.r + last.r) * 1.5) {
+//					if (last.x > collider.x) {
+//						velocity.x -= 0.1;
+//					} else {
+//						velocity.x += 0.1;
+//					}
+//				}
+//			}
+//		}
 
 		velocity.y += gravity * Math.cos(Camera.angle);
 		velocity.x += gravity * Math.sin(Camera.angle);
@@ -148,12 +165,12 @@ public class Ball {
 	public boolean bounceOfWallsX() {
 		if (collider.x - collider.r < 0 && velocity.x < 0) {
 			velocity.x *= -1;
-			lastCollisionIndex = -1;
+//			lastCollisionIndex = -1;
 			return true;
 		}
 		if (collider.x + collider.r > GameJava.gw && velocity.x > 0) {
 			velocity.x *= -1;
-			lastCollisionIndex = -1;
+//			lastCollisionIndex = -1;
 			return true;
 		}
 		return false;
@@ -162,12 +179,12 @@ public class Ball {
 	public boolean bounceOfWallsY() {
 		if (collider.y - collider.r < 0 && velocity.y < 0) {
 			velocity.y *= -1;
-			lastCollisionIndex = -1;
+//			lastCollisionIndex = -1;
 			return true;
 		}
 		if (collider.y + collider.r > GameJava.gh && velocity.y > 0) {
 			velocity.y *= -1;
-			lastCollisionIndex = -1;
+//			lastCollisionIndex = -1;
 			return true;
 		}
 		return false;

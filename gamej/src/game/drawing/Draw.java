@@ -1,8 +1,10 @@
 package game.drawing;
 
+import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Composite;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -62,10 +64,12 @@ public class Draw extends JPanel {
     public static int drawLimitBottom;
 
     public static boolean absoluteDraw = false; // whether camera should be ignored
+    
+    public static float alphaBetweenFrames = 1.0f;
+    public static float lastAlpha = alphaBetweenFrames;
 
     public static final GraphicsEnvironment graphicsEnviro = GraphicsEnvironment.getLocalGraphicsEnvironment();
-    public static final GraphicsConfiguration graphicsConfig = graphicsEnviro.getDefaultScreenDevice()
-            .getDefaultConfiguration();
+    public static final GraphicsConfiguration graphicsConfig = graphicsEnviro.getDefaultScreenDevice().getDefaultConfiguration();
     
     public static int drawCalls = 0;
 
@@ -463,6 +467,12 @@ public class Draw extends JPanel {
     // draws the buffer to the jpanel
     public static void renderToScreen() {
         Graphics2D g2 = (Graphics2D) panel.getGraphics();
+        if(lastAlpha != 1.0f || alphaBetweenFrames != 1.0f) {
+	    	int rule = AlphaComposite.SRC_OVER;
+	        Composite comp = AlphaComposite.getInstance(rule , (float) alphaBetweenFrames );
+	        g2.setComposite(comp );
+	        lastAlpha = alphaBetweenFrames;
+        }
         g2.drawImage(buffer, 0, 0, null);
         g2.dispose();
     }

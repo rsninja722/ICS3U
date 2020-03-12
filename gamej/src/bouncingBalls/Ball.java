@@ -25,6 +25,7 @@ public class Ball {
 
 	// constructor
 	public Ball() {
+		// radius
 		int radius = Utils.rand(10, 15);
 		collider = new Circle(Utils.rand(radius, GameJava.gw - radius), Utils.rand(radius, GameJava.gh - radius),
 				radius);
@@ -145,18 +146,18 @@ public class Ball {
 		velocity.x *= 0.99;
 		velocity.y *= 0.99;
 
-//		if (lastCollisionIndex != -1) {
-//			Circle last = balls[lastCollisionIndex].collider;
-//			if (last.y > collider.y) {
-//				if (Physics.dist(collider.x, collider.y, last.x, last.y) < (collider.r + last.r) * 1.5) {
-//					if (last.x > collider.x) {
-//						velocity.x -= 0.1;
-//					} else {
-//						velocity.x += 0.1;
-//					}
-//				}
-//			}
-//		}
+		if (lastCollisionIndex != -1) {
+			Circle last = balls[lastCollisionIndex].collider;
+			if (last.y > collider.y) {
+				if (Physics.dist(collider.x, collider.y, last.x, last.y) < (collider.r + last.r) * 1.5) {
+					if (last.x > collider.x) {
+						velocity.x -= 0.1;
+					} else {
+						velocity.x += 0.1;
+					}
+				}
+			}
+		}
 
 		velocity.y += gravity * Math.cos(Camera.angle);
 		velocity.x += gravity * Math.sin(Camera.angle);

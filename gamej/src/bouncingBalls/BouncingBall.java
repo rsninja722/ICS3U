@@ -1,5 +1,12 @@
 package bouncingBalls;
 
+/** 2020.03.13
+ * James N
+ * Bouncing balls
+ * ball bouncing animation
+ * ENTER to restart
+ */
+
 import java.awt.Color;
 import java.awt.RenderingHints;
 import game.*;
@@ -15,9 +22,10 @@ public class BouncingBall extends GameJava {
     static final int blockCount = 20;
     
     int index = 0;
+    int explosionTime = 0;
 
     public BouncingBall() {
-        super(800, 600, 60, 60);
+        super(1000, 800, 60, 60);
         // create rectangles
         Block.makeBlocks(blockCount);
         // create balls
@@ -63,7 +71,7 @@ public class BouncingBall extends GameJava {
 	@Override
 	public void update() {
 		// randomly apply force to keep balls moving
-		if(Utils.rand(0, 100) == 1) {
+		if(explosionTime == 100) {
 			Circle explo = new Circle(Utils.rand(0, gw),Utils.rand(gh-gh/4, gh),200);
 			for (int i = 0; i < Ball.balls.length; i++) {
 				if(Physics.circlecircle(Ball.balls[i].collider, explo)) {
@@ -71,7 +79,9 @@ public class BouncingBall extends GameJava {
 					Ball.balls[i].velocity = new Point(Math.sin(ang) * 20,Math.cos(ang) * 20);
 				}
 			}
-			
+			explosionTime = 0;
+		} else {
+			explosionTime++;
 		}
 		
 		// move balls

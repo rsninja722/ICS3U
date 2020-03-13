@@ -318,6 +318,12 @@ public class Draw extends JPanel {
 
         windowedWidth = GameJava.gw;
         windowedHeight = GameJava.gh;
+        
+        int w = frame.getWidth() - frame.getInsets().right - frame.getInsets().left;
+        int h = frame.getHeight() - frame.getInsets().top - frame.getInsets().bottom;
+        panel.setSize(w, h);
+        GameJava.gw = panel.getWidth();
+        GameJava.gh = panel.getHeight();
     }
 
     public static void toggleFullSreen() {

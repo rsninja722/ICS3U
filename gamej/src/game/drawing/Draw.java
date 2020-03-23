@@ -12,6 +12,7 @@ import java.awt.image.VolatileImage;
 import java.io.File;
 import java.io.IOException;
 import java.awt.GraphicsEnvironment;
+import java.awt.RenderingHints;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.FontFormatException;
@@ -67,6 +68,8 @@ public class Draw extends JPanel {
     
     public static float alphaBetweenFrames = 1.0f;
     public static float lastAlpha = alphaBetweenFrames;
+    
+    public static boolean antialiasing = false;
 
     public static final GraphicsEnvironment graphicsEnviro = GraphicsEnvironment.getLocalGraphicsEnvironment();
     public static final GraphicsConfiguration graphicsConfig = graphicsEnviro.getDefaultScreenDevice().getDefaultConfiguration();
@@ -155,6 +158,18 @@ public class Draw extends JPanel {
      */
     public static void circleOutline(Circle circle) {
         canvas.drawOval((int) circle.x - circle.r + difx, (int) circle.y - circle.r + dify, circle.r * 2, circle.r * 2);
+    }
+
+    /**
+     * draws and arc from startAngle to arcAngle
+     * @param x
+     * @param y
+     * @param size
+     * @param startAngle in degrees
+     * @param arcAngle in degrees
+     */
+    public static void arc(int x, int y, int size, int startAngle, int arcAngle) {
+    	canvas.drawArc(x + difx - size/2, y + dify - size/2, size, size, startAngle, arcAngle);
     }
 
     /**
@@ -435,6 +450,13 @@ public class Draw extends JPanel {
                 canvas = buffer2Graphics;
                 break;
         }
+        
+        // turn on anti alliasing
+ 		if(antialiasing) {
+ 			Draw.canvas.setRenderingHint(
+                 RenderingHints.KEY_ANTIALIASING, 
+                 RenderingHints.VALUE_ANTIALIAS_ON);
+ 		}
 
         // set font
         canvas.setFont(drawFont);

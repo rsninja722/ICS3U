@@ -25,7 +25,8 @@
 			"private": "visable to just its class",
 			"protected": "hardly used, visable to pakage and subclasses",
 			"static": "can be accessed without creating an instance of the object",
-			"final": "javascript const, but in java: once set, cannot be modified"
+            "final": "javascript const, but in java: once set, cannot be modified",
+            "native": "used to interface with other languages like c++, might as well just use a c language at this point"
 		}
 	},
 	"data types": {
@@ -59,7 +60,16 @@
 			"creation": "datatype[] varname = new datatype[size];. A whole array can be set by setting the value to the values seperated by commas within curly brakets like this: {3,4,6,2,4}",
 			"access element": "arrayName[index] - this syntax can be used to get and set",
 			"printing": "Array.toString(array)"
-		}
+        },
+        "arrayLists": {
+            "general": "more like javascript arrays, the size can be changed dynamically",
+            "creation": "ArrayList<datatype> varname = new ArrayList<datatype>;",
+            "access element": "get with .get(index), set with .set(index)",
+            "add and remove": "add elements with .add(), remove with .remove(index or object to remove)"
+        },
+        "objects": {
+            "comparison": "== can be used to compare two objects, returns true it they are the same object, kind of like seeing if two pointers have the same value"
+        }
 	},
 	"classes": {
 		"class x extends y": "a class gets all the variables and methods of the extended class"

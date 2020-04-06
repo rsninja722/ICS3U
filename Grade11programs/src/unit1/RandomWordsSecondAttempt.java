@@ -22,23 +22,8 @@ public class RandomWordsSecondAttempt {
 		// print 10 words 
 		for (int j = 0; j < 10; j++) {
 
-			// initialize word of correct length 
-			char[] word = new char[wordLength];
-
-			// fill word will consonants
-			for (int i = 0; i < wordLength; i++) {
-				word[i] = consonants.charAt(rand(0, consonants.length() - 1));
-			}
-
-			// determine amount of vowels to add
-			int vowelCount = rand(vowelMinimum, vowelLimit);	
-			// add vowels at random place
-			for (int i = 0; i < vowelCount; i++) {
-				word[rand(0, wordLength - 1)] = vowels.charAt(rand(0, vowels.length() - 1));
-			}
-
 			// print word
-			System.out.println(new String(word));
+			System.out.println(makeRandWord());
 
 		}
 		
@@ -47,5 +32,23 @@ public class RandomWordsSecondAttempt {
 	public static int rand(int min, int max) {
 		return (int) (Math.floor(Math.random() * (max - min + 1)) + min);
 	}
+	
+	public static String makeRandWord() {
+		// initialize word of correct length 
+		char[] word = new char[wordLength];
 
+		// fill word will consonants
+		for (int i = 0; i < wordLength; i++) {
+			word[i] = consonants.charAt(rand(0, consonants.length() - 1));
+		}
+
+		// determine amount of vowels to add
+		int vowelCount = rand(vowelMinimum, vowelLimit);	
+		// add vowels at random place
+		for (int i = 0; i < vowelCount; i++) {
+			word[rand(0, wordLength - 1)] = vowels.charAt(rand(0, vowels.length() - 1));
+		}
+		
+		return new String(word);
+	}
 }

@@ -48,36 +48,36 @@ public class ArrayListPractice {
 			++i;
 		} while (i < 5);
 
-		// print size
-		System.out.println(boxList.size());
-
 		// same values, but not the same object
 		System.out.println(boxList.contains(new Box(9, Color.BLUE, "ASDAASDSAD")));
 		// same object
 		System.out.println(boxList.contains(boxList.get(0)));
+		
+		
+		System.out.println("before removing: " + boxList.toString());
 
-		// print what's in each
-		for (Box b : boxList) {
-			System.out.println(b.whatsInside);
+		// remove any box smaller than 1000
+		for (int j=0;j<boxList.size();j++) {
+			if(boxList.get(j).size < 1000) {
+				boxList.remove(boxList.get(j));
+				j--;
+			}
 		}
+		
+		System.out.println("after removing: " + boxList.toString());
 
 		// print size of each
 		Iterator<Box> iter = boxList.iterator();
-
 		while (iter.hasNext()) {
 			System.out.println(iter.next().size);
 		}
-
-		// remove some boxes
-		boxList.remove(3);
-		boxList.remove(boxList.get(1));
 
 		// list to array
 		Box[] boxArray = new Box[boxList.size()];
 		boxArray = boxList.toArray(boxArray);
 
 		for (Box b : boxArray) {
-			System.out.println(b);
+			System.out.println("box from Array: " + b);
 		}
 
 		// array to list

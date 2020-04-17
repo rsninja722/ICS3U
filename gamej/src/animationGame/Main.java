@@ -2,6 +2,10 @@ package animationGame;
 
 import java.awt.Color;
 
+import animationGame.enemies.BaseEnemy;
+import animationGame.enemies.EnemyMedium;
+import animationGame.enemies.EnemySmall;
+
 /** 2020.04.06
  * James N
  * Animation Game
@@ -32,6 +36,21 @@ class Main extends GameJava {
 
 		Camera.zoom = 2.0f;
 		Camera.centerOn(0, 0);
+		
+		Draw.frame.setResizable(false);
+		Draw.allowFullScreen = false;
+		
+		EnemySmall.create(100, 100, 0.5, 0);
+		EnemySmall.create(100, 120, -0.6, 0);
+		EnemySmall.create(120, 100, 0, -0.2);
+		EnemySmall.create(120, 120, 0, 1.0);
+		
+		EnemyMedium.create(150, 150, 0, 0.75);
+		
+		for(int i=0;i<25;i++) {
+			int dir = Utils.rand(0, 1);
+			EnemySmall.create(Utils.rand(400, 800), Utils.rand(100, 300), dir == 1 ? Utils.rand(1,10) / 10.0 : 0, dir == 0 ? Utils.rand(1,10) / 10.0 : 0);
+		}
 
 		LoopManager.startLoops(this);
 	}
@@ -43,11 +62,15 @@ class Main extends GameJava {
 
 	@Override
 	public void draw() {
+		Draw.image(Sprites.get("back1"), 500, 200);
+		
+		BaseEnemy.drawEnemies();
+		
 		if(Utils.debugMode) {
 			Draw.setColor(new Color(0,0,255,155));
 			Draw.circle(player.circle);
 		}
-		Draw.image(Sprites.get("player"), (int) player.circle.x, (int) player.circle.y, player.angle, 1.0);
+		player.draw();
 	}
 
 	@Override
@@ -58,6 +81,7 @@ class Main extends GameJava {
 				break;
 			case playing:
 				player.moveBasedOnInput();
+				BaseEnemy.moveEnemies();
 				break;
 			case transition:
 	

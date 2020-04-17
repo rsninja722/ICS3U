@@ -38,6 +38,8 @@ public class Draw extends JPanel {
     private static Font drawFont; // font used for all text drawing
 
     public static boolean fullScreen = false; // if in fullscreen mode
+    
+    public static boolean allowFullScreen = true; 
 
     public static int windowedWidth; // width to return to when exiting full screen
     public static int windowedHeight; // width to return to when exiting full screen

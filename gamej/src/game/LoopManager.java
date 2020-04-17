@@ -42,7 +42,7 @@ public class LoopManager {
                 double currentTime = System.nanoTime();
                 if (currentTime - lastUpdateTime >= nanosPerUpdate) {
                     // full screen toggle
-                    if (Input.keyClick(KeyCodes.F11)) {
+                    if (Input.keyClick(KeyCodes.F11) && Draw.allowFullScreen) {
                         Draw.toggleFullSreen();
                     }
                     // debug info toggle

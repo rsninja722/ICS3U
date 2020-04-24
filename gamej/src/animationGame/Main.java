@@ -1,11 +1,5 @@
 package animationGame;
 
-import java.awt.Color;
-
-import animationGame.enemies.BaseEnemy;
-import animationGame.enemies.EnemyMedium;
-import animationGame.enemies.EnemySmall;
-
 /** 2020.04.06
  * James N
  * Animation Game
@@ -13,44 +7,50 @@ import animationGame.enemies.EnemySmall;
  * controls: wasd
  */
 
+import java.awt.Color;
+
+import animationGame.enemies.BaseEnemy;
+import animationGame.enemies.EnemyMedium;
+import animationGame.enemies.EnemySmall;
+
 import game.*;
 import game.drawing.Camera;
 import game.drawing.Draw;
 import game.drawing.Sprites;
 
 class Main extends GameJava {
-	Player player;
+	static Player player;
 
-	GameState state;
-
-	enum GameState {
+	static enum GameState {
 		titleScreen, playing, transition, death
 	}
+
+	static GameState state;
+	static GameState lastState;
+	static GameState desiredState;
+
+	static enum Level {
+		tutorial, two, boss
+	}
+
+	static Level currentLevel;
 
 	public Main() {
 		super(1000, 800, 144, 144);
 
 		player = new Player();
 
-		state = GameState.playing;
+		state = GameState.transition;
+		desiredState = GameState.titleScreen;
+		currentLevel = Level.tutorial;
+		
+		Button.generateButtons();
 
 		Camera.zoom = 2.0f;
 		Camera.centerOn(0, 0);
-		
+
 		Draw.frame.setResizable(false);
 		Draw.allowFullScreen = false;
-		
-		EnemySmall.create(100, 100, 0.5, 0);
-		EnemySmall.create(100, 120, -0.6, 0);
-		EnemySmall.create(120, 100, 0, -0.2);
-		EnemySmall.create(120, 120, 0, 1.0);
-		
-		EnemyMedium.create(150, 150, 0, 0.75);
-		
-		for(int i=0;i<25;i++) {
-			int dir = Utils.rand(0, 1);
-			EnemySmall.create(Utils.rand(400, 800), Utils.rand(100, 300), dir == 1 ? Utils.rand(1,10) / 10.0 : 0, dir == 0 ? Utils.rand(1,10) / 10.0 : 0);
-		}
 
 		LoopManager.startLoops(this);
 	}
@@ -59,41 +59,161 @@ class Main extends GameJava {
 		frameTitle = "gaming time";
 		new Main();
 	}
-
+	
 	@Override
-	public void draw() {
-		Draw.image(Sprites.get("back1"), 500, 200);
-		
-		BaseEnemy.drawEnemies();
-		
-		if(Utils.debugMode) {
-			Draw.setColor(new Color(0,0,255,155));
-			Draw.circle(player.circle);
+	public void update() {
+		boolean isNewState = false;
+		if (state != lastState) {
+			isNewState = true;
 		}
-		player.draw();
+		
+
+		switch (state) {
+		// title screen
+		case titleScreen:
+			Button.updateButtons();
+			break;
+
+		// playing
+		case playing:
+			if(isNewState) {
+				
+				loadLevel(currentLevel);
+			}
+			
+			player.moveBasedOnInput();
+			BaseEnemy.moveEnemies();
+			
+			if(BaseEnemy.playerHittingEnemies(player)) {
+				state = GameState.transition;
+				
+				--player.lives;
+				if(player.lives <= 0) {
+					desiredState = GameState.death;
+				} else {
+					desiredState = GameState.playing;
+				}
+			}
+			break;
+
+		// transition
+		case transition:
+			// TODO add delay
+			if(!isNewState) {
+				state = desiredState;
+			}
+			break;
+
+		// death
+		case death:
+		
+			break;
+		}
+		
+		lastState = state;
 	}
 
 	@Override
-	public void update() {
+	public void draw() {
 		switch (state) {
-			case titleScreen:
-	
+		// title screen
+		case titleScreen:
+			
+			break;
+
+		// playing
+		case playing:
+			switch (currentLevel) {
+			case tutorial:
+				Draw.image(Sprites.get("back1"), 500, 200);
 				break;
-			case playing:
-				player.moveBasedOnInput();
-				BaseEnemy.moveEnemies();
+			case boss:
+
 				break;
-			case transition:
-	
+			case two:
+
 				break;
-			case death:
-	
-				break;
+			}
+
+			BaseEnemy.drawEnemies();
+
+			if (Utils.debugMode) {
+				Draw.setColor(new Color(0, 0, 255, 155));
+				Draw.circle(player.circle);
+			}
+			player.draw();
+
+			break;
+
+		// transition
+		case transition:
+
+			break;
+
+		// death
+		case death:
+			
+			break;
 		}
 	}
 
 	@Override
 	public void absoluteDraw() {
-		Draw.text("press f3 for debug", 100, 10);
+		switch (state) {
+		// title screen
+		case titleScreen:
+			Draw.setColor(new Color(36,36,36));
+			Draw.rect(gw/2,gh/2,gw,gh);
+			Button.drawButtons();
+			break;
+
+		// playing
+		case playing:
+			for(int i=0;i<player.lives; i++) {
+				Draw.image(Sprites.get("heart"), 32+ i*36, 32, 0.0, 2.0);
+			}
+			break;
+
+		// transition
+		case transition:
+			// TODO add delay
+			state = desiredState;
+			break;
+
+		// death
+		case death:
+			Draw.setColor(Color.CYAN);
+			Draw.text("DEd", 100, 100);
+			break;
+		}
 	}
+
+	public void loadLevel(Level levelToSwitchTo) {
+		BaseEnemy.clearEneimes();
+		player.reset();
+		switch (levelToSwitchTo) {
+		case tutorial:
+
+			EnemySmall.create(300, 100, 0, 0.5);
+			EnemySmall.create(400, 220, 0, -0.3);
+			EnemySmall.create(520, 300, 0, -0.2);
+			EnemySmall.create(620, 420, 0, 0.75);
+			EnemySmall.create(620, 420, 0.3, 0);
+
+			EnemyMedium.create(750, 150, 0, 0.1);
+			EnemyMedium.create(750, 200, 0, 0.1);
+			EnemyMedium.create(750, 250, 0, 0.1);
+			EnemyMedium.create(750, 300, 0, 0.1);
+
+			player.setPosition(200, 200);
+			break;
+		case boss:
+
+			break;
+		case two:
+
+			break;
+		}
+	}
+
 }

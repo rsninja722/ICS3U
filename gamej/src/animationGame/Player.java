@@ -12,18 +12,28 @@ import game.physics.Point;
 
 // main player of the game
 public class Player {
-	Circle circle; // collider
+	public Circle circle; // collider
 	double acceleration;
 	double velocity;
 	double maxVelocity;
 	double angle;
 	double walkCycle;
+	
+	int lives;
 
 	Player() {
 		this.acceleration = Constants.Player.acceleration;
 		this.maxVelocity = Constants.Player.maxVelocity;
 		this.angle = 0;
-		circle = new Circle(200, 200, 8);
+		circle = new Circle(0, 0, 8);
+		this.walkCycle = 1;
+		this.lives = 3;
+	}
+	
+	void reset() {
+		this.acceleration = Constants.Player.acceleration;
+		this.maxVelocity = Constants.Player.maxVelocity;
+		this.angle = 0;
 		this.walkCycle = 1;
 	}
 

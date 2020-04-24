@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import animationGame.Constants;
+import animationGame.Player;
 import game.Utils;
 import game.drawing.Draw;
 import game.drawing.Sprites;
@@ -37,6 +38,19 @@ public class BaseEnemy {
 		for (int i = 0; i < enemies.size(); i++) {
 			enemies.get(i).move();
 		}
+	}
+	
+	public static boolean playerHittingEnemies(Player p) {
+		for (int i = 0; i < enemies.size(); i++) {
+			if(Physics.circlecircle(enemies.get(i).collider, p.circle)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static void clearEneimes() {
+		enemies = new ArrayList<BaseEnemy>();
 	}
 
 	void draw() {
@@ -82,7 +96,6 @@ public class BaseEnemy {
 		if (this.colliding()) {
 			this.velocity.y *= -1;
 		}
-
 	}
 
 	boolean colliding() {

@@ -1,5 +1,6 @@
 package game;
 
+import game.audio.Sounds;
 import game.drawing.Draw;
 import game.drawing.Sprites;
 
@@ -66,6 +67,8 @@ public class GameJava {
         updatesPerSecond = ups;
 
         Sprites.loadSprites();
+        
+        Sounds.loadSounds();
         
         Draw.init();
 

@@ -4,6 +4,7 @@ import game.GameJava;
 import game.Input;
 import game.KeyCodes;
 import game.Utils;
+import game.audio.Sounds;
 import game.drawing.Camera;
 import game.drawing.Draw;
 import game.drawing.Sprites;
@@ -72,6 +73,10 @@ public class Player {
 		// move in the average direction of the key presses
 		double angle = 0;
 		double denominator = 0;
+		
+		if(Input.keyClick(KeyCodes.Q)) {
+			Sounds.play("step");
+		}
 
 		// up
 		if (Input.keyDown(KeyCodes.W) || Input.keyDown(KeyCodes.UP)) {

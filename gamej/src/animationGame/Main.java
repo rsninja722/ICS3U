@@ -51,7 +51,9 @@ class Main extends GameJava {
 
 		Draw.frame.setResizable(false);
 		Draw.allowFullScreen = false;
-
+		
+		
+		
 		LoopManager.startLoops(this);
 	}
 
@@ -66,7 +68,6 @@ class Main extends GameJava {
 		if (state != lastState) {
 			isNewState = true;
 		}
-		
 
 		switch (state) {
 		// title screen

@@ -3,14 +3,13 @@ package animationGame;
 import java.awt.Color;
 import java.util.ArrayList;
 
+import animationGame.Main.GameState;
 import game.Input;
 import game.drawing.Draw;
 import game.physics.Physics;
 import game.physics.Rect;
 
 public class Button {
-
-	public static ArrayList<Button> buttons = new ArrayList<Button>();
 
 	static Color backGroundColor = new Color(46, 46, 46);
 	static Color hoverColor = new Color(66,66,66);
@@ -25,18 +24,6 @@ public class Button {
 		this.rect = new Rect(x, y, w, h);
 		this.callBack = callBack;
 		this.text = text;
-	}
-
-	public static void drawButtons() {
-		for (int i = 0; i < buttons.size(); i++) {
-			buttons.get(i).draw();
-		}
-	}
-
-	public static void updateButtons() {
-		for (int i = 0; i < buttons.size(); i++) {
-			buttons.get(i).update();
-		}
 	}
 
 	void draw() {
@@ -60,14 +47,16 @@ public class Button {
 		}
 	}
 
-	public static void generateButtons() {
-		// start button
-		buttons.add(new Button(500, 200, 200, 50, "Start", Button::startButton));
-	}
-
 	// start button
 	static void startButton() {
-		Main.state = Main.GameState.transition;
-		Main.desiredState = Main.GameState.playing;
+		Main.transitionTo(GameState.playing);
+	}
+	
+	// retry button
+	static void retryButton() {
+		Main.currentLevel = Main.Level.tutorial;
+		Main.player = new Player();
+		Main.shouldReloadLevel = true;
+		Main.transitionTo(GameState.playing);
 	}
 }

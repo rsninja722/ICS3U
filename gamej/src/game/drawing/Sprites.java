@@ -30,7 +30,7 @@ public class Sprites {
     	
         System.out.println("[Sprites] loading sprites from: " + imagesDirectory);
         
-        StringBuilder debugMsg = new StringBuilder("Loaded images: ");
+        StringBuilder debugMsg = new StringBuilder("[Sprites] Loaded images: ");
         
         debugMsg.append(loadFromDirectory(imagesDirectory));
         

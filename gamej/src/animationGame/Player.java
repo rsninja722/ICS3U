@@ -1,5 +1,6 @@
 package animationGame;
 
+import animationGame.Main.GameState;
 import game.GameJava;
 import game.Input;
 import game.KeyCodes;
@@ -39,16 +40,6 @@ public class Player {
 	}
 
 	void draw() {
-		// increase cycle
-		this.walkCycle += Math.abs(this.velocity/5);
-		// idle
-		if (this.velocity == 0) {
-			this.walkCycle = 3;
-		}
-		// reset cycle
-		if (this.walkCycle >= 11) {
-			this.walkCycle = 1;
-		}
 		// get number for which picture to use
 		int cycle = (int) Math.floor(this.walkCycle);
 		cycle = cycle >= 6 ? 11 - cycle : cycle;
@@ -74,8 +65,8 @@ public class Player {
 		double angle = 0;
 		double denominator = 0;
 		
-		if(Input.keyClick(KeyCodes.Q)) {
-			Sounds.play("step");
+		if(Input.keyClick(KeyCodes.B)) {
+//			Sounds.a
 		}
 
 		// up
@@ -121,6 +112,17 @@ public class Player {
 		circle.x += Math.cos(this.angle) * this.velocity;
 		circle.y += Math.sin(this.angle) * this.velocity;
 		
+		// increase cycle
+		this.walkCycle += Math.abs(this.velocity/5);
+		// idle
+		if (this.velocity == 0) {
+			this.walkCycle = 3;
+		}
+		// reset cycle
+		if (this.walkCycle >= 11) {
+			this.walkCycle = 1;
+		}
+		
 		// walls
 		if(circle.y < 55) {
 			circle.y = 55;
@@ -128,6 +130,32 @@ public class Player {
 		if(circle.y > 345) {
 			circle.y = 345;
 		}
+		if(circle.x < 0) {
+			circle.x = 0;
+		}
+		
+		// complete level
+		if(circle.x > 1000) {
+			this.lives++;
+			switch (Main.currentLevel) {
+				case tutorial:
+					Main.currentLevel = Main.Level.two;
+					Main.transitionTo(GameState.playing);
+					Main.transitionAlpha=254;
+					Main.shouldReloadLevel = true;
+					break;
+				case two:
+					Main.currentLevel = Main.Level.boss;
+					Main.transitionTo(GameState.playing);
+					Main.transitionAlpha=254;
+					Main.shouldReloadLevel = true;
+					break;
+				case boss:
+					Main.transitionTo(GameState.win);
+					break;
+			}
+		}
+
 
 		// camera movement
 		Point cameraTargetPosition = new Point(this.circle.x, this.circle.y);

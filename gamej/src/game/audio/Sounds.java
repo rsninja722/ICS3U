@@ -3,6 +3,8 @@ package game.audio;
 import java.io.File;
 import java.util.HashMap;
 
+import javax.sound.sampled.Clip;
+
 import game.GameJava;
 import game.audio.Sound;
 import game.drawing.Sprite;
@@ -27,7 +29,7 @@ public class Sounds {
     	
         System.out.println("[Sounds] loading sounds from: " + soundsDirectory);
         
-        StringBuilder debugMsg = new StringBuilder("Loaded sounds: ");
+        StringBuilder debugMsg = new StringBuilder("[Sounds] Loaded sounds: ");
         
         debugMsg.append(loadFromDirectory(soundsDirectory));
 
@@ -62,7 +64,7 @@ public class Sounds {
         if (s == null) {
             System.out.println("error: " + soundName + " not found");
         }
-        soundList.get(soundName).clip.start();
+        soundList.get(soundName).play();
 	}
 
 	public static void stop(String soundName) {
@@ -70,8 +72,7 @@ public class Sounds {
         if (s == null) {
             System.out.println("error: " + soundName + " not found");
         }
-        soundList.get(soundName).clip.stop();
-		soundList.get(soundName).clip.setFramePosition(0);
+        soundList.get(soundName).stop();
 	}
 	
 	public static void loop(String soundName) {
@@ -79,6 +80,14 @@ public class Sounds {
         if (s == null) {
             System.out.println("error: " + soundName + " not found");
         }
-        soundList.get(soundName).clip.loop(-1);
+        soundList.get(soundName).loop();
+	}
+	
+	public static void ajustGain(String soundName) {
+		Sound s = soundList.get(soundName);
+        if (s == null) {
+            System.out.println("error: " + soundName + " not found");
+        }
+        soundList.get("step").ajustGain(10.0f);
 	}
 }

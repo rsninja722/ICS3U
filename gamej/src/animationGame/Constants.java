@@ -10,6 +10,6 @@ public class Constants {
 	public static class Player {
 		public static final double acceleration = 0.01;
 		public static final double maxVelocity = 0.5;
-		public static final double turnSpeed = 0.15;
+		public static final double turnSpeed = 0.1;
 	}
 }

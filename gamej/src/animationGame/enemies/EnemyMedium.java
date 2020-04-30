@@ -6,6 +6,7 @@ public class EnemyMedium extends BaseEnemy {
 		super(x, y, 13, 2, velx, vely);
 	}
 
+	// creates a new medium enemy
 	public static void create(double x, double y, double velx, double vely) {
 		BaseEnemy.enemies.add(new EnemyMedium(x, y, velx, vely));
 	}

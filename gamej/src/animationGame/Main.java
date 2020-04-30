@@ -3,8 +3,15 @@ package animationGame;
 /** 2020.04.06
  * James N
  * Animation Game
- * plan: simple top down game where the player has to avoid traps and reach the end
- * controls: wasd
+ * Simple top down game where the player has to avoid creatures, and get to the right side.
+ * The player is equipped with a tranquilizer dart the can stun the creatures
+ * controls: wasd, hold then release left click to shoot
+ * 
+ * TODO
+ * put more magic numbers in constants
+ * sounds
+ * music
+ * particles?
  */
 
 import java.awt.Color;
@@ -22,26 +29,28 @@ import game.drawing.Sprites;
 public class Main extends GameJava {
 	static public Player player;
 
+	// the main states the game can be in
 	static enum GameState {
 		titleScreen, playing, transition, death, win
 	}
 
-	static GameState state;
-	static GameState lastState;
-	static GameState desiredState;
-	
+	static GameState state; // current state
+	static GameState lastState; // state last frame
+	static GameState desiredState; // state to transition to
+
 	static boolean transitioning = false;
 	static int transitionAlpha = 255;
-	static int transitionDirection = -1;
+	static int transitionDirection = -1; // what to add to the transition alpha
 	static boolean shouldReloadLevel = true;
-	
+
 	static enum Level {
 		tutorial, two, boss
 	}
 
 	static Level currentLevel;
-	
+
 	Button startButton = new Button(500, 200, 200, 50, "Start", Button::startButton);
+
 	Button retryButton = new Button(500, 200, 200, 50, "Retry", Button::retryButton);
 
 	public Main() {
@@ -49,105 +58,127 @@ public class Main extends GameJava {
 
 		player = new Player();
 
+		// set state to titles screen
 		state = GameState.titleScreen;
 		desiredState = GameState.titleScreen;
-		
+
+		// start at level 1
 		currentLevel = Level.tutorial;
-		
+
+		// set the camera to be zoomed in x2
 		Camera.zoom = 2.0f;
 		Camera.centerOn(0, 0);
 
+		// prevent game from being resized
 		Draw.frame.setResizable(false);
 		Draw.allowFullScreen = false;
-		
-		
-		
+
+		// start draw and update loops
 		LoopManager.startLoops(this);
 	}
 
 	public static void main(String[] args) throws InterruptedException {
-		frameTitle = "gaming time";
+		frameTitle = "⫷Animation Game⫸";
 		new Main();
 	}
+
 	
 	@Override
 	public void update() {
-		Utils.putInDebugMenu("A", state.toString());
-		Utils.putInDebugMenu("A", desiredState.toString());
-		if(!(transitioning && transitionAlpha != 255)) {
+		
+		// update only if not transitioning. Also update once when the screen is black so any code that sets stuff in place runs
+		if (!(transitioning && transitionAlpha != 255)) {
+			
+			// check if the state changed from last frame
 			boolean isNewState = false;
 			if (state != lastState) {
 				isNewState = true;
 			}
 			lastState = state;
-	
-			
-			
+
 			switch (state) {
+			
 			// title screen
 			case titleScreen:
 				startButton.update();
 				break;
-	
+
 			// playing
 			case playing:
-				if(shouldReloadLevel) {
+				
+				if (shouldReloadLevel) {
 					loadLevel(currentLevel);
 					shouldReloadLevel = false;
 				}
-				
+
 				player.moveBasedOnInput();
+
+				// move all the enemies
 				BaseEnemy.moveEnemies();
-				
-				if(BaseEnemy.playerHittingEnemies(player)) {
+
+				// move any darts
+				Dart.moveDarts();
+
+				// if the player is hitting any enemies
+				if (BaseEnemy.circleHittingEnemies(player.circle) != -1) {
+					// subtract a life
 					--player.lives;
-					if(player.lives <= 0) {
+					// if there are no lives, go to game over screen
+					if (player.lives <= 0) {
 						Main.transitionTo(GameState.death);
+					// if the player still has lives, reset the level
 					} else {
 						Main.transitionTo(GameState.playing);
 						shouldReloadLevel = true;
 					}
 				}
 				break;
-	
+
 			// transition
 			case transition:
-				
 				break;
-	
+
 			// death
 			case death:
 				retryButton.update();
 				break;
+				
 			}
 		}
+
+		// transition blackout 
+		if (transitioning) {
 		
-		if(transitioning) {
 			transitionAlpha += transitionDirection;
-			if(transitionDirection == 1) {
-				if(transitionAlpha == 255) {
+			
+			// when screen is black, switch states and set transitionDirection to unblacken the screen
+			if (transitionDirection == 1) {
+				if (transitionAlpha == 255) {
 					transitionDirection = -1;
 					state = desiredState;
 				}
 			}
-			if(transitionDirection == -1) {
-				if(transitionAlpha == 0) {
+			// when done transitioning, stop being in the transitioning state
+			if (transitionDirection == -1) {
+				if (transitionAlpha == 0) {
 					transitioning = false;
 				}
 			}
 		}
 	}
 
+	
 	@Override
 	public void draw() {
 		switch (state) {
+		
 		// title screen
 		case titleScreen:
-			
 			break;
 
 		// playing
 		case playing:
+			// draw level background
 			switch (currentLevel) {
 			case tutorial:
 				Draw.image(Sprites.get("back1"), 500, 200);
@@ -160,93 +191,112 @@ public class Main extends GameJava {
 				break;
 			}
 
+			Dart.drawDarts();
+			
 			BaseEnemy.drawEnemies();
 
+			// player hit box when in debug mode (hit f3) 
 			if (Utils.debugMode) {
 				Draw.setColor(new Color(0, 0, 255, 155));
 				Draw.circle(player.circle);
 			}
+			
 			player.draw();
 
 			break;
 
 		// transition
 		case transition:
-
 			break;
-
+			
 		// death
 		case death:
-			
 			break;
+			
+		// win
+		case win:
+			break;
+			
 		}
 	}
 
 	@Override
 	public void absoluteDraw() {
 		switch (state) {
+		
 		// title screen
 		case titleScreen:
-			Draw.setColor(new Color(36,36,36));
-			Draw.rect(gw/2,gh/2,gw,gh);
+			// background
+			Draw.setColor(new Color(36, 36, 36));
+			Draw.rect(gw / 2, gh / 2, gw, gh);
+			
 			startButton.draw();
 			break;
 
 		// playing
 		case playing:
-			for(int i=0;i<player.lives; i++) {
-				Draw.image(Sprites.get("heart"), 32+ i*36, 32, 0.0, 2.0);
-			}
+			// hearts and darts
+			player.absDraw();
 			break;
 
 		// transition
 		case transition:
-			
 			break;
 
 		// death
 		case death:
-			Draw.setColor(new Color(36,36,36));
-			Draw.rect(gw/2,gh/2,gw,gh);
+			// background
+			Draw.setColor(new Color(36, 36, 36));
+			Draw.rect(gw / 2, gh / 2, gw, gh);
+			// you died text
 			Draw.setColor(Color.RED);
 			Draw.setFontSize(6);
 			Draw.text("You Died", 350, 300);
+			
 			retryButton.draw();
 			break;
-		
+
 		// win
 		case win:
-			Draw.setColor(new Color(36,36,36));
-			Draw.rect(gw/2,gh/2,gw,gh);
+			// background
+			Draw.setColor(new Color(36, 36, 36));
+			Draw.rect(gw / 2, gh / 2, gw, gh);
+			// you win text
 			Draw.setColor(Color.YELLOW);
 			Draw.setFontSize(6);
 			Draw.text("You Win!", 350, 300);
-			Draw.image(Sprites.get("enemy3"), gw/2 + 100, gh/2, frameCount/100.0, 4);
-			Draw.image(Sprites.get("enemy3"), gw/2 - 100, gh/2, frameCount/-100.0, 4);
+			// spinning enemies for no reason
+			Draw.image(Sprites.get("enemy3"), gw / 2 + 100, gh / 2, frameCount / 100.0, 4);
+			Draw.image(Sprites.get("enemy3"), gw / 2 - 100, gh / 2, frameCount / -100.0, 4);
 			break;
 		}
-		
-		if(transitioning) {
-			Draw.setColor(new Color(0,0,0,transitionAlpha));
-			Draw.rect(gw/2, gh/2, gw, gh);
+
+		// transition blackout
+		if (transitioning) {
+			// set color to black with desired alpha level 
+			Draw.setColor(new Color(0, 0, 0, transitionAlpha));
+			// over lay color
+			Draw.rect(gw / 2, gh / 2, gw, gh);
+			// level specific text if the player hasen't won, or died
 			Draw.setColor(Color.WHITE);
 			Draw.setFontSize(4);
-			if(desiredState != GameState.death && desiredState != GameState.win) {
+			if (desiredState != GameState.death && desiredState != GameState.win) {
 				switch (currentLevel) {
-					case tutorial:
-						Draw.text("Stage 1", gw/2-100, gh/2-20);
-						break;
-					case two:
-						Draw.text("Stage 2", gw/2-100, gh/2-20);
-						break;
-					case boss:
-						Draw.text("Final Stage", gw/2-150, gh/2-20);
-						break;
+				case tutorial:
+					Draw.text("Stage 1", gw / 2 - 100, gh / 2 - 20);
+					break;
+				case two:
+					Draw.text("Stage 2", gw / 2 - 100, gh / 2 - 20);
+					break;
+				case boss:
+					Draw.text("Final Stage", gw / 2 - 150, gh / 2 - 20);
+					break;
 				}
 			}
 		}
 	}
-	
+
+	// transitions to a GameState
 	public static void transitionTo(GameState newState) {
 		transitioning = true;
 		desiredState = newState;
@@ -254,10 +304,14 @@ public class Main extends GameJava {
 		transitionAlpha = 0;
 	}
 
+	// resets all enemies
 	public void loadLevel(Level levelToSwitchTo) {
 		BaseEnemy.clearEneimes();
+		Dart.clearDarts();
 		player.reset();
 		switch (levelToSwitchTo) {
+		
+		// level 1
 		case tutorial:
 
 			EnemySmall.create(300, 100, 0, 0.5);
@@ -266,7 +320,7 @@ public class Main extends GameJava {
 			EnemySmall.create(520, 300, 0, -0.2);
 			EnemySmall.create(620, 200, 0, 0.75);
 			EnemySmall.create(620, 250, 0.3, 0);
-			
+
 			EnemySmall.create(100, 100, 0.4, 0);
 			EnemySmall.create(50, 300, 0.3, 0);
 
@@ -277,46 +331,51 @@ public class Main extends GameJava {
 
 			player.setPosition(200, 200);
 			break;
+			
+		// level 2
 		case two:
-			for(int i=100;i<500;i+= 20) {
-				if(i == 300) {
+			for (int i = 100; i < 500; i += 20) {
+				if (i == 300) {
 					continue;
 				}
-				EnemySmall.create(i, 25+i/1.5, 0, 0.5);
+				EnemySmall.create(i, 25 + i / 1.5, 0, 0.5);
 			}
-			
+
 			EnemyMedium.create(550, 75, 0, 0);
 			EnemyMedium.create(550, 110, 0, 0);
 			EnemyMedium.create(550, 290, 0, 0);
 			EnemyMedium.create(550, 325, 0, 0);
-			
+
 			EnemyMedium.create(900, 75, 0, 0);
 			EnemyMedium.create(900, 110, 0, 0);
 			EnemyMedium.create(900, 290, 0, 0);
 			EnemyMedium.create(900, 325, 0, 0);
-			
+
 			EnemySmall.create(600, 60, -0.3, 0);
 			EnemySmall.create(650, 80, -0.4, 0);
 			EnemySmall.create(700, 100, -0.4, 0);
 			EnemySmall.create(750, 120, -0.3, 0);
-			
+
 			EnemySmall.create(750, 280, -0.3, 0);
 			EnemySmall.create(600, 300, -0.4, 0);
 			EnemySmall.create(650, 320, -0.4, 0);
 			EnemySmall.create(700, 340, -0.3, 0);
-			
+
 			EnemyMedium.create(750, 150, 0, 0);
 			EnemyMedium.create(750, 185, 0, 0);
 			EnemyMedium.create(750, 210, 0, 0);
 			EnemyMedium.create(750, 245, 0, 0);
-			
+
 			player.setPosition(25, 200);
 			break;
+		
+		// final stage
 		case boss:
 			EnemyBoss.create(590, 150, 0, 0);
 			EnemyBoss.create(590, 250, 0, 0);
 			player.setPosition(25, 200);
 			break;
+			
 		}
 	}
 

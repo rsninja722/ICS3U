@@ -5,6 +5,7 @@ package animationGame;
 import java.util.ArrayList;
 
 import animationGame.enemies.BaseEnemy;
+import game.audio.Sounds;
 import game.drawing.Draw;
 import game.drawing.Sprites;
 import game.physics.Circle;
@@ -20,8 +21,8 @@ public class Dart {
 	boolean hasHit;
 
 	Dart(double x, double y, double angle) {
-		collider = new Circle(x, y, 3);
-		velocity = new Point(Math.cos(angle) * 5.0, Math.sin(angle) * 5.0);
+		collider = new Circle(x, y, 4);
+		velocity = new Point(Math.cos(angle) * Constants.Dart.dartSpeed, Math.sin(angle) * Constants.Dart.dartSpeed);
 		this.angle = angle;
 		this.hasHit = false;
 	}
@@ -32,12 +33,13 @@ public class Dart {
 		
 		// if this is the first time hitting an enemy
 		if(BaseEnemy.circleHittingEnemies(this.collider) != -1 && this.hasHit == false) {
+			Sounds.play("dartHit");
 			BaseEnemy e = BaseEnemy.enemies.get(BaseEnemy.circleHittingEnemies(this.collider));
 			// "stun" it
 			e.velocity.x = 0;
 			e.velocity.y = 0;
 			// for the boss, knock it back
-			e.speed = -1.0;
+			e.speed = -2.0;
 			// stop moving the dart
 			this.velocity.x = 0;
 			this.velocity.y = 0;
@@ -46,7 +48,8 @@ public class Dart {
 		}
 		
 		// if dart hits a wall, stop moving
-		if(this.collider.y < 55 || this.collider.y > 345 || this.collider.x < 0 || this.collider.x > 1000) {
+		if((this.collider.y < 55 || this.collider.y > 345 || this.collider.x < 0 || this.collider.x > 1000) && this.hasHit == false) {
+			Sounds.play("dartPlink");
 			this.velocity.x = 0;
 			this.velocity.y = 0;
 			this.hasHit = true;

@@ -22,6 +22,7 @@ import animationGame.enemies.EnemyMedium;
 import animationGame.enemies.EnemySmall;
 
 import game.*;
+import game.audio.Sounds;
 import game.drawing.Camera;
 import game.drawing.Draw;
 import game.drawing.Sprites;
@@ -39,7 +40,7 @@ public class Main extends GameJava {
 	static GameState desiredState; // state to transition to
 
 	static boolean transitioning = false;
-	static int transitionAlpha = 255;
+	static int transitionAlpha = 100;
 	static int transitionDirection = -1; // what to add to the transition alpha
 	static boolean shouldReloadLevel = true;
 
@@ -54,7 +55,7 @@ public class Main extends GameJava {
 	Button retryButton = new Button(500, 200, 200, 50, "Retry", Button::retryButton);
 
 	public Main() {
-		super(1000, 800, 144, 144);
+		super(1000, 800, 60, 60);
 
 		player = new Player();
 
@@ -63,7 +64,7 @@ public class Main extends GameJava {
 		desiredState = GameState.titleScreen;
 
 		// start at level 1
-		currentLevel = Level.tutorial;
+		currentLevel = Level.boss;
 
 		// set the camera to be zoomed in x2
 		Camera.zoom = 2.0f;
@@ -87,7 +88,7 @@ public class Main extends GameJava {
 	public void update() {
 		
 		// update only if not transitioning. Also update once when the screen is black so any code that sets stuff in place runs
-		if (!(transitioning && transitionAlpha != 255)) {
+		if (!(transitioning && transitionAlpha != 100)) {
 			
 			// check if the state changed from last frame
 			boolean isNewState = false;
@@ -121,6 +122,7 @@ public class Main extends GameJava {
 
 				// if the player is hitting any enemies
 				if (BaseEnemy.circleHittingEnemies(player.circle) != -1) {
+					Sounds.play("hit");
 					// subtract a life
 					--player.lives;
 					// if there are no lives, go to game over screen
@@ -143,6 +145,10 @@ public class Main extends GameJava {
 				retryButton.update();
 				break;
 				
+			// win
+			case win:
+				break;
+				
 			}
 		}
 
@@ -153,7 +159,7 @@ public class Main extends GameJava {
 			
 			// when screen is black, switch states and set transitionDirection to unblacken the screen
 			if (transitionDirection == 1) {
-				if (transitionAlpha == 255) {
+				if (transitionAlpha == 100) {
 					transitionDirection = -1;
 					state = desiredState;
 				}
@@ -274,7 +280,7 @@ public class Main extends GameJava {
 		// transition blackout
 		if (transitioning) {
 			// set color to black with desired alpha level 
-			Draw.setColor(new Color(0, 0, 0, transitionAlpha));
+			Draw.setColor(new Color(0, 0, 0,  (int) Utils.mapRange(transitionAlpha, 0, 100, 0, 255)));
 			// over lay color
 			Draw.rect(gw / 2, gh / 2, gw, gh);
 			// level specific text if the player hasen't won, or died
@@ -314,20 +320,20 @@ public class Main extends GameJava {
 		// level 1
 		case tutorial:
 
-			EnemySmall.create(300, 100, 0, 0.5);
-			EnemySmall.create(400, 220, 0, -0.3);
-			EnemySmall.create(400, 300, 0, -0.3);
-			EnemySmall.create(520, 300, 0, -0.2);
-			EnemySmall.create(620, 200, 0, 0.75);
-			EnemySmall.create(620, 250, 0.3, 0);
+			EnemySmall.create(300, 100, 0, 1.0);
+			EnemySmall.create(400, 220, 0, -0.6);
+			EnemySmall.create(400, 300, 0, -0.6);
+			EnemySmall.create(520, 300, 0, -0.5);
+			EnemySmall.create(620, 200, 0, 1.5);
+			EnemySmall.create(620, 250, 0.6, 0);
 
-			EnemySmall.create(100, 100, 0.4, 0);
-			EnemySmall.create(50, 300, 0.3, 0);
+			EnemySmall.create(100, 100, 0.8, 0);
+			EnemySmall.create(50, 300, 0.6, 0);
 
-			EnemyMedium.create(750, 150, 0, 0.1);
-			EnemyMedium.create(750, 200, 0, 0.1);
-			EnemyMedium.create(750, 250, 0, 0.1);
-			EnemyMedium.create(750, 300, 0, 0.1);
+			EnemyMedium.create(750, 150, 0, 0.2);
+			EnemyMedium.create(750, 200, 0, 0.2);
+			EnemyMedium.create(750, 250, 0, 0.2);
+			EnemyMedium.create(750, 300, 0, 0.2);
 
 			player.setPosition(200, 200);
 			break;
@@ -338,7 +344,7 @@ public class Main extends GameJava {
 				if (i == 300) {
 					continue;
 				}
-				EnemySmall.create(i, 25 + i / 1.5, 0, 0.5);
+				EnemySmall.create(i, 25 + i / 1.5, 0, 1.0);
 			}
 
 			EnemyMedium.create(550, 75, 0, 0);
@@ -351,20 +357,20 @@ public class Main extends GameJava {
 			EnemyMedium.create(900, 290, 0, 0);
 			EnemyMedium.create(900, 325, 0, 0);
 
-			EnemySmall.create(600, 60, -0.3, 0);
-			EnemySmall.create(650, 80, -0.4, 0);
-			EnemySmall.create(700, 100, -0.4, 0);
-			EnemySmall.create(750, 120, -0.3, 0);
+			EnemySmall.create(600, 60, -0.6, 0);
+			EnemySmall.create(650, 80, -0.8, 0);
+			EnemySmall.create(700, 100, -0.8, 0);
+			EnemySmall.create(750, 120, -0.6, 0);
 
-			EnemySmall.create(750, 280, -0.3, 0);
-			EnemySmall.create(600, 300, -0.4, 0);
-			EnemySmall.create(650, 320, -0.4, 0);
-			EnemySmall.create(700, 340, -0.3, 0);
+			EnemySmall.create(750, 280, -0.6, 0);
+			EnemySmall.create(600, 300, -0.8, 0);
+			EnemySmall.create(650, 320, -0.8, 0);
+			EnemySmall.create(700, 340, -0.6, 0);
 
 			EnemyMedium.create(750, 150, 0, 0);
-			EnemyMedium.create(750, 185, 0, 0);
-			EnemyMedium.create(750, 210, 0, 0);
-			EnemyMedium.create(750, 245, 0, 0);
+			EnemyMedium.create(750, 180, 0, 0);
+			EnemyMedium.create(750, 215, 0, 0);
+			EnemyMedium.create(750, 250, 0, 0);
 
 			player.setPosition(25, 200);
 			break;

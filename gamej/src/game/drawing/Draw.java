@@ -303,7 +303,7 @@ public class Draw extends JPanel {
 
         // Andrew Tyler www.AndrewTyler.net and font@andrewtyler.net
         try {
-            graphicsEnviro.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(GameJava.baseDirectory + "\\pixelmix.ttf")));
+            graphicsEnviro.registerFont(Font.createFont(Font.TRUETYPE_FONT, new File(GameJava.baseDirectory + GameJava.directoryChar + "pixelmix.ttf")));
             drawFont = new Font("pixelmix", Font.PLAIN, 8);
         } catch (IOException | FontFormatException e) {
             System.err.println("[Draw] cannot find pixelmix.ttf in assets, using default font instead");

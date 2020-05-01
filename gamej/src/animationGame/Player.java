@@ -91,13 +91,14 @@ public class Player {
 
 		// when lmb is pressed down, enter shooting mode
 		if (Input.mouseClick(0) && this.ammo > 0) {
+			Sounds.play("breath");
 			this.shooting = true;
 		}
 
 		if (this.shooting) {
 			// zoom in camera
 			if (Camera.zoom < 3.0) {
-				Camera.zoom += 0.01;
+				Camera.zoom += Constants.Camera.camZoomSpeed;
 			}
 
 			// point player towards mouse
@@ -108,6 +109,7 @@ public class Player {
 			
 			// fire dart when lmb is released
 			if (!Input.mouseDown(0)) {
+				Sounds.play("shoot");
 				Dart.addDart(this.circle.x, this.circle.y, this.angle);
 				this.ammo--;
 				this.shooting = false;
@@ -115,7 +117,7 @@ public class Player {
 		} else {
 			// zoom out camera
 			if (Camera.zoom > 2.0) {
-				Camera.zoom -= 0.05;
+				Camera.zoom -= Constants.Camera.camZoomSpeed * 2;
 				Camera.zoom = (float) Math.max(Camera.zoom, 2.0);
 			}
 			
@@ -164,6 +166,9 @@ public class Player {
 			circle.x += Math.cos(this.angle) * this.velocity;
 			circle.y += Math.sin(this.angle) * this.velocity;
 
+			double lastCycle = Math.floor(this.walkCycle);
+			lastCycle = lastCycle >= 6 ? 11 - lastCycle : lastCycle;
+			
 			// increase walk cycle for animation
 			this.walkCycle += Math.abs(this.velocity / 5);
 			// set animation to idle if not moving
@@ -173,6 +178,13 @@ public class Player {
 			// loop cycle
 			if (this.walkCycle >= 11) {
 				this.walkCycle = 1;
+			}
+			
+			double newCycle = Math.floor(this.walkCycle);
+			newCycle = newCycle >= 6 ? 11 - newCycle : newCycle;
+			
+			if(lastCycle != 3 && newCycle == 3 && !Main.transitioning) {
+				Sounds.play("step" + Utils.rand(0, 1));
 			}
 
 			// wall collision
@@ -188,6 +200,7 @@ public class Player {
 
 			// when player reaches the end of the level
 			if (circle.x > 1000) {
+				Sounds.play("good");
 				// give the player an extra life
 				this.lives++;
 				// go to next level, or win screen
@@ -196,14 +209,14 @@ public class Player {
 				case tutorial:
 					Main.currentLevel = Main.Level.two;
 					Main.transitionTo(GameState.playing);
-					Main.transitionAlpha = 254;
+					Main.transitionAlpha = 99;
 					Main.shouldReloadLevel = true;
 					break;
 					
 				case two:
 					Main.currentLevel = Main.Level.boss;
 					Main.transitionTo(GameState.playing);
-					Main.transitionAlpha = 254;
+					Main.transitionAlpha = 99;
 					Main.shouldReloadLevel = true;
 					break;
 					
@@ -220,7 +233,7 @@ public class Player {
 		// start camera at player 
 		Point cameraTargetPosition = new Point(this.circle.x, this.circle.y);
 		// move camera towards cursor if shooting
-		if (this.shooting) {
+		if (Camera.zoom > 2.0) {
 			cameraTargetPosition.x += Math.cos(Utils.pointTo(this.circle.x, this.circle.y, Input.mousePos.x, Input.mousePos.y)) * (Camera.zoom - 2.0) * 25.0;
 			cameraTargetPosition.y += Math.sin(Utils.pointTo(this.circle.x, this.circle.y, Input.mousePos.x, Input.mousePos.y)) * (Camera.zoom - 2.0) * 25.0;
 		}

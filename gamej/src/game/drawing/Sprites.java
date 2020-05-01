@@ -12,8 +12,6 @@ public class Sprites {
 
     // hash map of all the sprites
     private static HashMap<String, Sprite> spriteList = new HashMap<String, Sprite>();
-    
-    private static String directoryChar = System.getProperty("file.separator");
 
     // absolute path of the images folder
     private static String imagesDirectory;
@@ -21,12 +19,7 @@ public class Sprites {
     // finds images, loads them, and puts them in the hashmap
     public static void loadSprites() {
     	
-    	// if security stuff prevents the file separator from being accessed, default to windows separator
-    	if( !directoryChar.equals("\\") && !directoryChar.equals("/")) {
-    		directoryChar = "\\";
-    	}
-    	
-    	imagesDirectory = GameJava.baseDirectory + directoryChar + "images" +directoryChar;
+    	imagesDirectory = GameJava.baseDirectory + GameJava.directoryChar + "images" +GameJava.directoryChar;
     	
         System.out.println("[Sprites] loading sprites from: " + imagesDirectory);
         
@@ -54,7 +47,7 @@ public class Sprites {
                 spriteList.put(spriteName, new Sprite(path + name));
                 loadedFiles.append(spriteName + ",");
             } else {
-            	loadedFiles.append(loadFromDirectory(path + name + directoryChar));
+            	loadedFiles.append(loadFromDirectory(path + name + GameJava.directoryChar));
             }
         }
         

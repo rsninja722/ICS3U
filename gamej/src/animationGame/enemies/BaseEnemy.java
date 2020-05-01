@@ -6,9 +6,11 @@ import java.awt.Color;
 import java.util.ArrayList;
 
 import animationGame.Constants;
+import animationGame.Main;
 import animationGame.Player;
 import game.GameJava;
 import game.Utils;
+import game.audio.Sounds;
 import game.drawing.Draw;
 import game.drawing.Sprites;
 import game.physics.Circle;
@@ -18,6 +20,7 @@ import game.physics.Point;
 public class BaseEnemy {
 
 	public static ArrayList<BaseEnemy> enemies = new ArrayList<BaseEnemy>();
+	public static int lastBounceSoundTime = 0;
 
 	Circle collider;
 	public Point velocity;
@@ -43,6 +46,7 @@ public class BaseEnemy {
 
 	// updates all enemies
 	public static void moveEnemies() {
+		++lastBounceSoundTime;
 		for (int i = 0; i < enemies.size(); i++) {
 			enemies.get(i).move();
 		}
@@ -114,6 +118,11 @@ public class BaseEnemy {
 		// if there is a collision, reverse x velocity
 		if (this.colliding()) {
 			this.velocity.x *= -1;
+			// bounce sound
+			if(lastBounceSoundTime > 10 && Physics.dist(this.collider.x, this.collider.y, Main.player.circle.x, Main.player.circle.y) < 400) {
+				Sounds.play("bounce" + Utils.rand(0, 2));
+				lastBounceSoundTime = 0;
+			}
 		}
 		
 		// move in the y
@@ -121,6 +130,11 @@ public class BaseEnemy {
 		// if there is a collision, reverse y velocity
 		if (this.colliding()) {
 			this.velocity.y *= -1;
+			// bounce sound
+			if(lastBounceSoundTime > 10 && Physics.dist(this.collider.x, this.collider.y, Main.player.circle.x, Main.player.circle.y) < 400) {
+				Sounds.play("bounce" + Utils.rand(0, 2));
+				lastBounceSoundTime = 0;
+			}
 		}
 		
 		// increase cycle

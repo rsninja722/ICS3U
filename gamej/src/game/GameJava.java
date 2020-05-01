@@ -42,8 +42,11 @@ public class GameJava {
     /** title that displays in the top frame bar */
     public static String frameTitle = "game title";
     
+    // character that separates file paths
+    public static String directoryChar = System.getProperty("file.separator");
+    
     // base file directory
-    public static String baseDirectory = Paths.get("").toAbsolutePath().toString() + "\\assets";
+    public static String baseDirectory;
     
     /**
      * @param gameWidth window width
@@ -60,6 +63,13 @@ public class GameJava {
 	public static void init(int gameWidth, int gameHeight, int fps, int ups) {
 		System.out.println("[GameJava] initizlizing");
 		
+		// if security stuff prevents the file separator from being accessed, default to windows separator
+    	if( !directoryChar.equals("\\") && !directoryChar.equals("/")) {
+    		directoryChar = "\\";
+    	}
+		
+    	baseDirectory = Paths.get("").toAbsolutePath().toString() + directoryChar + "assets";
+    	
         gw = gameWidth;
         gh = gameHeight;
         

@@ -12,7 +12,7 @@ import game.drawing.Sprite;
 public class Sounds {
 	private static HashMap<String, Sound> soundList = new HashMap<String, Sound>();
 	
-	private static String directoryChar = System.getProperty("file.separator");
+	
 
     // absolute path of the images folder
     private static String soundsDirectory;
@@ -20,12 +20,7 @@ public class Sounds {
     // finds images, loads them, and puts them in the hashmap
     public static void loadSounds() {
     	
-    	// if security stuff prevents the file separator from being accessed, default to windows separator
-    	if( !directoryChar.equals("\\") && !directoryChar.equals("/")) {
-    		directoryChar = "\\";
-    	}
-    	
-    	soundsDirectory = GameJava.baseDirectory + directoryChar + "audio" + directoryChar;
+    	soundsDirectory = GameJava.baseDirectory + GameJava.directoryChar + "audio" + GameJava.directoryChar;
     	
         System.out.println("[Sounds] loading sounds from: " + soundsDirectory);
         
@@ -52,7 +47,7 @@ public class Sounds {
                 soundList.put(soundName, new Sound(path + name));
                 loadedFiles.append(soundName + ",");
             } else {
-            	loadedFiles.append(loadFromDirectory(path + name + directoryChar));
+            	loadedFiles.append(loadFromDirectory(path + name + GameJava.directoryChar));
             }
         }
         

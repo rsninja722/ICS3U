@@ -4,17 +4,19 @@ import java.awt.Color;
 
 import game.GameJava;
 import game.Utils;
+import game.audio.Sounds;
 import game.drawing.Draw;
 import game.drawing.Sprites;
 import game.physics.Physics;
+import animationGame.Constants;
 import animationGame.Main;
 
 public class EnemyBoss extends BaseEnemy {
 
 	double angle;
 	boolean asleep;
-	static double maxSpeed = 0.8;
-	static double accel = 0.01;
+	static double maxSpeed = Constants.Enemy.BossSpeed;
+	static double accel = Constants.Enemy.BossAccel;
 
 	EnemyBoss(double x, double y, double velx, double vely) {
 		super(x, y, 28, 4, velx, vely);
@@ -65,6 +67,7 @@ public class EnemyBoss extends BaseEnemy {
 		// wake up when player gets close
 		if (this.asleep) {
 			if (Physics.dist(this.collider.x, this.collider.y, Main.player.circle.x, Main.player.circle.y) < 200) {
+				Sounds.play("roar");
 				this.asleep = false;
 			}
 		} else {
@@ -74,7 +77,7 @@ public class EnemyBoss extends BaseEnemy {
 			}
 
 			// gradually turn to player
-			this.angle = Utils.turnTo(this.angle, Utils.pointTo(this.collider.x, this.collider.y, Main.player.circle.x, Main.player.circle.y), 0.01 - (this.speed / 80.0));
+			this.angle = Utils.turnTo(this.angle, Utils.pointTo(this.collider.x, this.collider.y, Main.player.circle.x, Main.player.circle.y), 0.02 - (this.speed / 80.0));
 
 			// set velocity
 			this.velocity.x = Math.cos(this.angle) * this.speed;
@@ -94,14 +97,18 @@ public class EnemyBoss extends BaseEnemy {
 			if (this.colliding()) {
 				this.collider.y -= this.velocity.y;
 				this.speed *= -1;
+				if(lastBounceSoundTime > 10) {
+					Sounds.play("bounce" + Utils.rand(0, 2));
+					lastBounceSoundTime = 0;
+				}
 			}
 
 			// turn if missed charge
 			if (Physics.dist(this.collider.x, this.collider.y, Main.player.circle.x, Main.player.circle.y) > 200
-			&& this.speed > 0.3 
+			&& this.speed > 0.6 
 			&& !(Math.round(this.angle) == Math.round(Utils.pointTo(this.collider.x,this.collider.y, Main.player.circle.x, Main.player.circle.y)))) {
 				this.speed -= accel * 2;
-				this.angle = Utils.turnTo(this.angle, Utils.pointTo(this.collider.x, this.collider.y, Main.player.circle.x, Main.player.circle.y), 0.01);
+				this.angle = Utils.turnTo(this.angle, Utils.pointTo(this.collider.x, this.collider.y, Main.player.circle.x, Main.player.circle.y), 0.02);
 			}
 
 			// if off screen turn directly to player and go
@@ -109,12 +116,22 @@ public class EnemyBoss extends BaseEnemy {
 				this.angle = Utils.pointTo(this.collider.x, this.collider.y, Main.player.circle.x, Main.player.circle.y);
 				this.speed = 1;
 			}
+			
+			double lastCycle = Math.floor(this.walkCycle);
+			lastCycle = lastCycle >= 6 ? 11 - lastCycle : lastCycle;
 
 			// increase cycle
 			this.walkCycle += Math.abs(this.velocity.x / 5) + Math.abs(this.velocity.y / 5);
 			// loop cycle
 			if (this.walkCycle >= 11) {
 				this.walkCycle = 1;
+			}
+			
+			double newCycle = Math.floor(this.walkCycle);
+			newCycle = newCycle >= 6 ? 11 - newCycle : newCycle;
+			
+			if(lastCycle != 3 && newCycle == 3) {
+				Sounds.play("bigStep");
 			}
 		}
 	}

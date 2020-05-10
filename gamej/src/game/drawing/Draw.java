@@ -237,13 +237,14 @@ public class Draw extends JPanel {
      * @param angle radians
      * @param scale pixels per pixel
      */
-    public static void imageIgnoreCutoff(Sprite spr, int x, int y, double angle, double scale) {
+    public static void imageIgnoreCutoff(String imageName, int x, int y, double angle, double scale) {
         AffineTransform t = canvas.getTransform();
 
         canvas.translate(Math.round(x + difx), Math.round(y + dify));
         canvas.scale(scale, scale);
         canvas.rotate(angle);
 
+        Sprite spr = Sprites.get(imageName);
         canvas.drawImage(spr.img, Math.round(-spr.width / 2), Math.round(-spr.height / 2), null);
 
         canvas.setTransform(t);drawCalls++;
@@ -255,7 +256,8 @@ public class Draw extends JPanel {
      * @param x
      * @param y
      */
-    public static void imageIgnoreCutoff(Sprite spr, int x, int y) {
+    public static void imageIgnoreCutoff(String imageName, int x, int y) {
+    	Sprite spr = Sprites.get(imageName);
         canvas.drawImage(spr.img, Math.round(x + difx - (spr.width / 2)), Math.round(y + dify - (spr.height / 2)), null);drawCalls++;
     }
 
@@ -267,7 +269,9 @@ public class Draw extends JPanel {
      * @param angle radians
      * @param scale pixels per pixel
      */
-    public static void image(Sprite spr, int x, int y, double angle, double scale) {
+    public static void image(String imageName, int x, int y, double angle, double scale) {
+    	Sprite spr = Sprites.get(imageName);
+    	
         int half = (int) (spr.drawLimit * scale);
         if ((x + half > drawLimitLeft && x - half < drawLimitRight && y + half > drawLimitTop && y - half < drawLimitBottom) || absoluteDraw) {
             AffineTransform t = canvas.getTransform();
@@ -288,7 +292,9 @@ public class Draw extends JPanel {
      * @param x
      * @param y
      */
-    public static void image(Sprite spr, int x, int y) {
+    public static void image(String imageName, int x, int y) {
+    	Sprite spr = Sprites.get(imageName);
+    	
         int half = spr.drawLimit;
         if ((x + half > drawLimitLeft && x - half < drawLimitRight && y + half > drawLimitTop && y - half < drawLimitBottom) || absoluteDraw) {
             canvas.drawImage(spr.img, Math.round(x + difx - (spr.width / 2)), Math.round(y + dify - (spr.height / 2)), null);

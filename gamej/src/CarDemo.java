@@ -76,14 +76,14 @@ public class CarDemo extends GameJava {
 	    int ylim = (int) (Math.round((car.y-edge/2)/200)*200);
 	    for(int x=xlim-400;x<xlim+edge+400;x+=200) {
 	        for(int y=ylim-400;y<ylim+edge+400;y+=200) {
-	        	Draw.image(Sprites.get("grass"),x,y,0,2);
+	        	Draw.image("grass",x,y,0,2);
 	        }
 	    }
 
         // road
         Draw.setColor(new Color(0.0f,0.0f,1.0f,0.5f));
 	    for(int i=0;i<tilePos.length;i++) {
-            Draw.image(Sprites.get("road"),(int)tilePos[i].x,(int)tilePos[i].y,0,2);
+            Draw.image("road",(int)tilePos[i].x,(int)tilePos[i].y,0,2);
             if(Utils.debugMode) {
                 Draw.rect((int)tilePos[i].x,(int)tilePos[i].y,32,32);
             }
@@ -92,7 +92,7 @@ public class CarDemo extends GameJava {
         // wall
         Draw.setColor(new Color(0.0f,1.0f,0.0f,0.5f));
 	    for(int i=0;i<brickRects.length;i++) {
-            Draw.image(Sprites.get("bricks"),(int)brickRects[i].x,(int)brickRects[i].y,0,2);
+            Draw.image("bricks",(int)brickRects[i].x,(int)brickRects[i].y,0,2);
             if(Utils.debugMode) {
                 Draw.rect((int)brickRects[i].x,(int)brickRects[i].y,128,128);
             }
@@ -216,6 +216,6 @@ public class CarDemo extends GameJava {
     
     // draw car
     public void absoluteDraw() {
-    	Draw.image(Sprites.get("car"), gw/2, gh/2, 0, 2);
+    	Draw.image("car", gw/2, gh/2, 0, 2);
     }
 }

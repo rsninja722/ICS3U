@@ -26,6 +26,7 @@ import game.audio.Sounds;
 import game.drawing.Camera;
 import game.drawing.Draw;
 import game.drawing.Sprites;
+import game.physics.Point;
 
 public class Main extends GameJava {
 	static public Player player;
@@ -49,10 +50,17 @@ public class Main extends GameJava {
 	}
 
 	static Level currentLevel;
+	
+	boolean showingTutorial = true;
+	
+	boolean introPlaying = true;
+	
+	Point cameraDirection;
+	Point titleCam;
 
-	Button startButton = new Button(500, 200, 200, 50, "Start", Button::startButton);
+	Button startButton = new Button(480, gh/2, 200, 50, "Start", Button::startButton);
 
-	Button retryButton = new Button(500, 200, 200, 50, "Retry", Button::retryButton);
+	Button retryButton = new Button(480, 200, 200, 50, "Retry", Button::retryButton);
 
 	public Main() {
 		super(1000, 800, 60, 60);
@@ -64,11 +72,21 @@ public class Main extends GameJava {
 		desiredState = GameState.titleScreen;
 
 		// start at level 1
-		currentLevel = Level.boss;
+		currentLevel = Level.tutorial;
 
-		// set the camera to be zoomed in x2
-		Camera.zoom = 2.0f;
-		Camera.centerOn(0, 0);
+		Camera.zoom = 3.0f;
+		Camera.centerOn(200, 200);
+		double camAngle = Math.toRadians(Utils.rand(0, 359));
+		cameraDirection = new Point(Math.cos(camAngle)/4,Math.sin(camAngle)/4);
+		titleCam = new Point(200,200);
+		
+		//create enemies for title screen
+		for(int i=0;i<50;i++) {
+			EnemySmall.create(Utils.rand(20, Constants.roomWidth-20), Utils.rand(70, 330), 0, 0);
+		}
+		for(int i=0;i<10;i++) {
+			EnemyMedium.create(Utils.rand(20, Constants.roomWidth-20), Utils.rand(70, 330), 0, 0);
+		}
 
 		// prevent game from being resized
 		Draw.frame.setResizable(false);
@@ -78,7 +96,7 @@ public class Main extends GameJava {
 		LoopManager.startLoops(this);
 	}
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) {
 		frameTitle = "⫷Animation Game⫸";
 		new Main();
 	}
@@ -101,11 +119,43 @@ public class Main extends GameJava {
 			
 			// title screen
 			case titleScreen:
-				startButton.update();
+				if(introPlaying && frameCount >= 200) {
+					Sounds.play("title");
+					introPlaying = false;
+				}
+				if(!introPlaying) {
+					startButton.update();
+				}
+				
+				// move camera
+				titleCam.x += cameraDirection.x;
+				titleCam.y += cameraDirection.y;
+				// bounce 
+				if (titleCam.x < GameJava.gw / 2 / Camera.zoom) {
+					titleCam.x = (int) (GameJava.gw / 2 / Camera.zoom) + 1;
+					cameraDirection.x *= -1;
+				}
+				if (titleCam.y < GameJava.gh / 2 / Camera.zoom) {
+					titleCam.y = (int) (GameJava.gh / 2 / Camera.zoom) + 1;
+					cameraDirection.y *= -1;
+				}
+				if (titleCam.x > Constants.roomWidth - GameJava.gw / 2 / Camera.zoom - 8) {
+					titleCam.x = (int) (Constants.roomWidth - GameJava.gw / 2 / Camera.zoom - 8) - 1;
+					cameraDirection.x *= -1;
+				}
+				if (titleCam.y > Constants.roomHeight - GameJava.gh / 2 / Camera.zoom - 8) {
+					titleCam.y = (int) (Constants.roomHeight - GameJava.gh / 2 / Camera.zoom - 8) - 1;
+					cameraDirection.y *= -1;
+				}
+				Camera.centerOn(titleCam);
 				break;
 
 			// playing
 			case playing:
+				
+				if(isNewState) {
+					Camera.zoom = 2.0f;
+				}
 				
 				if (shouldReloadLevel) {
 					loadLevel(currentLevel);
@@ -123,6 +173,7 @@ public class Main extends GameJava {
 				// if the player is hitting any enemies
 				if (BaseEnemy.circleHittingEnemies(player.circle) != -1) {
 					Sounds.play("hit");
+					showingTutorial = false;
 					// subtract a life
 					--player.lives;
 					// if there are no lives, go to game over screen
@@ -161,6 +212,12 @@ public class Main extends GameJava {
 			if (transitionDirection == 1) {
 				if (transitionAlpha == 100) {
 					transitionDirection = -1;
+					if(desiredState == GameState.playing && (state == state.titleScreen || state == state.death)) {
+						Sounds.stop("title");
+						Sounds.stop("boss");
+						Sounds.ajustGain("mainSong",0.95f);
+						Sounds.loop("mainSong");
+					}
 					state = desiredState;
 				}
 			}
@@ -180,6 +237,8 @@ public class Main extends GameJava {
 		
 		// title screen
 		case titleScreen:
+			Draw.image("back1", 500, 200);
+			BaseEnemy.drawEnemies();
 			break;
 
 		// playing
@@ -187,13 +246,16 @@ public class Main extends GameJava {
 			// draw level background
 			switch (currentLevel) {
 			case tutorial:
-				Draw.image(Sprites.get("back1"), 500, 200);
+				Draw.image("back1", 500, 200);
+				if(showingTutorial) {
+					Draw.image("tutorial", 269, 204, 0, 2);
+				}
 				break;
 			case two:
-				Draw.image(Sprites.get("back2"), 500, 200);
+				Draw.image("back2", 500, 200);
 				break;
 			case boss:
-				Draw.image(Sprites.get("back3"), 500, 200);
+				Draw.image("back3", 500, 200);
 				break;
 			}
 
@@ -232,11 +294,54 @@ public class Main extends GameJava {
 		
 		// title screen
 		case titleScreen:
-			// background
-			Draw.setColor(new Color(36, 36, 36));
-			Draw.rect(gw / 2, gh / 2, gw, gh);
+			// intro animation
+			if(introPlaying) {
+				if(frameCount > 150) {
+					Draw.setColor(new Color(10, 10, 10, (int)Utils.mapRange(frameCount, 150, 200, 255, 0)));
+				} else {
+					Draw.setColor(new Color(10, 10, 10));
+				}
+				Draw.rect(gw / 2, gh / 2, gw, gh);
+				
+				// impact sounds
+				if(frameCount == 50 || frameCount == 100) {
+					Sounds.play("bigStep");
+				}
+				if(frameCount == 150) {
+					Sounds.play("riser");
+				}
+				// ani
+				if(frameCount < 50) {
+					Draw.image("ani", gw/2, 100, 0, 1.0 + (50-frameCount)/10.0);
+				} else {
+					Draw.image("ani", gw/2, 100);
+				}
+				
+				// mation
+				if(frameCount > 50) {
+					if(frameCount < 100) {
+						Draw.image("mation", gw/2, 100, 0, 1.0 + (100-frameCount)/10.0);
+					} else {
+						Draw.image("mation", gw/2, 100);
+					}
+				}
+				
+				// game
+				if(frameCount > 100) {
+					if(frameCount < 150) {
+						Draw.image("game", gw/2, 100, 0, 1.0 + (150-frameCount)/10.0);
+					} else {
+						Draw.image("game", gw/2, 100);
+					}
+				}
+			}
 			
-			startButton.draw();
+			if(!introPlaying) {
+				startButton.draw();
+				Draw.image("ani", gw/2, 100);
+				Draw.image("mation", gw/2, 100);
+				Draw.image("game", gw/2, 100);
+			}
 			break;
 
 		// playing
@@ -272,8 +377,8 @@ public class Main extends GameJava {
 			Draw.setFontSize(6);
 			Draw.text("You Win!", 350, 300);
 			// spinning enemies for no reason
-			Draw.image(Sprites.get("enemy3"), gw / 2 + 100, gh / 2, frameCount / 100.0, 4);
-			Draw.image(Sprites.get("enemy3"), gw / 2 - 100, gh / 2, frameCount / -100.0, 4);
+			Draw.image("enemy3", gw / 2 + 100, gh / 2, frameCount / 100.0, 4);
+			Draw.image("enemy3", gw / 2 - 100, gh / 2, frameCount / -100.0, 4);
 			break;
 		}
 
@@ -341,9 +446,6 @@ public class Main extends GameJava {
 		// level 2
 		case two:
 			for (int i = 100; i < 500; i += 20) {
-				if (i == 300) {
-					continue;
-				}
 				EnemySmall.create(i, 25 + i / 1.5, 0, 1.0);
 			}
 

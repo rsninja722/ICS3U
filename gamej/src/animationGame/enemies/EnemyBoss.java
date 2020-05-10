@@ -36,10 +36,10 @@ public class EnemyBoss extends BaseEnemy {
 				Draw.circle(this.collider);
 			}
 			// get a number 0 or 1 for sleep animation, x and y position are used so every enemy doesn't breath at the same time
-			int sleepCycle = (int) (Math.round(((GameJava.frameCount + this.collider.x + this.collider.y) / 125.0)) % 2);
+			int sleepCycle = (int) (Math.round(((GameJava.frameCount + this.collider.x + this.collider.y) / 60.0)) % 2);
 
 			// draw sleeping enemy
-			Draw.image(Sprites.get("enemySleep" + sleepCycle), (int) this.collider.x, (int) this.collider.y,
+			Draw.image("enemySleep" + sleepCycle, (int) this.collider.x, (int) this.collider.y,
 					this.sleepAngle, this.sizeMultiplyer);
 
 		} else {
@@ -49,7 +49,7 @@ public class EnemyBoss extends BaseEnemy {
 			cycle = cycle >= 6 ? 11 - cycle : cycle;
 
 			// shadow
-			Draw.image(Sprites.get("shadow"), (int) this.collider.x, (int) this.collider.y, 0, this.sizeMultiplyer);
+			Draw.image("shadow", (int) this.collider.x, (int) this.collider.y, 0, this.sizeMultiplyer);
 
 			// hit box
 			if (Utils.debugMode) {
@@ -58,7 +58,7 @@ public class EnemyBoss extends BaseEnemy {
 			}
 
 			// enemy
-			Draw.image(Sprites.get("enemy" + cycle), (int) this.collider.x, (int) this.collider.y, angle, this.sizeMultiplyer);
+			Draw.image("enemy" + cycle, (int) this.collider.x, (int) this.collider.y, angle, this.sizeMultiplyer);
 		}
 	}
 

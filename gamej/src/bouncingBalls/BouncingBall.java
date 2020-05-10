@@ -36,7 +36,7 @@ public class BouncingBall extends GameJava {
         LoopManager.startLoops(this);
 	}
 	
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) {
         frameTitle = "bouncing balls";
         new BouncingBall();   
     }

@@ -18,10 +18,9 @@ public class ExampleUsage extends GameJava {
 	
 	// put code here to draw to screen
 	public void draw() {
-        Sprite boss = Sprites.get("Boss10");
         for(int y =0;y<gh;y+=40) {
             for(int x=0;x<gw;x+=40) {
-                Draw.image(boss,x,y);
+                Draw.image("Boss10",x,y);
             }    
         }
         
@@ -39,8 +38,8 @@ public class ExampleUsage extends GameJava {
         Draw.setColor(Color.MAGENTA);
 		Draw.circle((int)Input.mousePos.x, (int)Input.mousePos.y, 10);
 		Utils.putInDebugMenu("Angle", Utils.pointTo(new Point(300,200), new Point(Input.mousePos.x,Input.mousePos.y)));
-        Draw.imageIgnoreCutoff(Sprites.get("Boss10"),300,200,Utils.pointTo(new Point(300,200), new Point(Input.mousePos.x,Input.mousePos.y)),8);
-        Draw.imageIgnoreCutoff(Sprites.get("car"),400,400,frameCount/-75.0,3);
+        Draw.imageIgnoreCutoff("Boss10",300,200,Utils.pointTo(new Point(300,200), new Point(Input.mousePos.x,Input.mousePos.y)),8);
+        Draw.imageIgnoreCutoff("car",400,400,frameCount/-75.0,3);
         Draw.setLineWidth(10);
         Draw.line(new Point(300,200), new Point(Input.mousePos.x,Input.mousePos.y));
 

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import animationGame.Main.GameState;
 import game.Input;
+import game.audio.Sounds;
 import game.drawing.Draw;
 import game.physics.Physics;
 import game.physics.Rect;
@@ -25,6 +26,8 @@ public class Button {
 	Runnable callBack;
 	// text to display
 	String text;
+	
+	boolean shouldPlaySound = true;
 
 	Button(int x, int y, int w, int h, String text, Runnable callBack) {
 		this.rect = new Rect(x, y, w, h);
@@ -35,8 +38,13 @@ public class Button {
 	void draw() {
 		// draw background color based on if the player is hovering over the button
 		if (Physics.rectpoint(this.rect, Input.rawMousePos)) {
+			if(shouldPlaySound) {
+				Sounds.play("click");
+				shouldPlaySound = false;
+			}
 			Draw.setColor(hoverColor);
 		} else {
+			shouldPlaySound = true;
 			Draw.setColor(backGroundColor);
 		}
 		Draw.rect(this.rect);
@@ -53,6 +61,7 @@ public class Button {
 	void update() {
 		// when clicked, call callback
 		if (Physics.rectpoint(this.rect, Input.rawMousePos) && Input.mouseClick(0)) {
+			Sounds.play("bigStep");
 			this.callBack.run();
 		}
 	}

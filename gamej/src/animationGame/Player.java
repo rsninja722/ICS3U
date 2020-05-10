@@ -51,29 +51,29 @@ public class Player {
 
 	void draw() {
 		// shadow
-		Draw.image(Sprites.get("shadow"), (int) this.circle.x, (int) this.circle.y);
+		Draw.image("shadow", (int) this.circle.x, (int) this.circle.y);
 
 		// player
 		if (this.shooting) {
 			// draw player holding blow gun
-			Draw.image(Sprites.get("playerShoot"), (int) this.circle.x, (int) this.circle.y, this.angle, 1.0);
+			Draw.image("playerShoot", (int) this.circle.x, (int) this.circle.y, this.angle, 1.0);
 		} else {
 			// get number for which picture to use
 			int cycle = (int) Math.floor(this.walkCycle);
 			cycle = cycle >= 6 ? 11 - cycle : cycle;
 			// draw frame of animation
-			Draw.image(Sprites.get("player" + cycle), (int) this.circle.x, (int) this.circle.y, this.angle, 1.0);
+			Draw.image("player" + cycle, (int) this.circle.x, (int) this.circle.y, this.angle, 1.0);
 		}
 	}
 
 	void absDraw() {
 		// hearts
 		for (int i = 0; i < this.lives; i++) {
-			Draw.image(Sprites.get("heart"), 32 + i * 36, 32, 0.0, 2.0);
+			Draw.image("heart", 32 + i * 36, 32, 0.0, 2.0);
 		}
 		// dart
 		for (int i = 0; i < this.ammo; i++) {
-			Draw.image(Sprites.get("dart"), 32 + i * 36, 64, 0.0, 2.0);
+			Draw.image("dart", 32 + i * 36, 64, 0.0, 2.0);
 		}
 	}
 
@@ -218,10 +218,14 @@ public class Player {
 					Main.transitionTo(GameState.playing);
 					Main.transitionAlpha = 99;
 					Main.shouldReloadLevel = true;
+					Sounds.stop("mainSong");
+					Sounds.loop("boss");
 					break;
 					
 				case boss:
 					Main.transitionTo(GameState.win);
+					Sounds.stop("boss");
+					Sounds.play("title");
 					break;
 					
 				}

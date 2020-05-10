@@ -58,7 +58,7 @@ public class Dart {
 	}
 	
 	void draw() {
-		Draw.image(Sprites.get("dart"), (int) this.collider.x, (int) this.collider.y, this.angle, 1.0);
+		Draw.image("dart", (int) this.collider.x, (int) this.collider.y, this.angle, 1.0);
 	}
 	
 	// draws all darts

@@ -12,11 +12,14 @@ import javax.sound.sampled.FloatControl;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import game.Utils;
+
 public class Sound {
 
 	String filePathCache;
 	ArrayList<Clip> clips = new ArrayList<Clip>();
 	int clipIndex = 0;
+	boolean loopSet = false;
 	public boolean isMusic = false;
 
 	Sound(String filePath) {
@@ -65,7 +68,11 @@ public class Sound {
 
 	public void loop() {
 		clipIndex = 0;
-		clips.get(0).loop(-1);
+		if(!loopSet) {
+			clips.get(0).loop(-1);
+			loopSet = true;
+		}
+		clips.get(0).setFramePosition(0);
 		clips.get(0).start();
 	}
 	
@@ -73,10 +80,13 @@ public class Sound {
 		Iterator<Clip> clipItor = clips.iterator();
 		while(clipItor.hasNext()) {
 			Clip c = clipItor.next();
+			
 			FloatControl gainControl = (FloatControl) c.getControl(FloatControl.Type.MASTER_GAIN);
-			gainControl.setValue(-10.0f);
-			System.out.println(gainControl.getMinimum());
-			System.out.println(gainControl.getMaximum());
+			
+			float gain = (float) Utils.mapRange(gainLevel, 0.0f, 1.0f, gainControl.getMinimum(), gainControl.getMaximum());
+
+			gainControl.setValue(gain);
+			
 		}
 		
 	}

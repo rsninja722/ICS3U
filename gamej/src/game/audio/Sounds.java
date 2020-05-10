@@ -10,7 +10,7 @@ import game.audio.Sound;
 import game.drawing.Sprite;
 
 public class Sounds {
-	private static HashMap<String, Sound> soundList = new HashMap<String, Sound>();
+	public static HashMap<String, Sound> soundList = new HashMap<String, Sound>();
 	
 	
 
@@ -46,7 +46,7 @@ public class Sounds {
                 String soundName = name.substring(0, name.indexOf("."));
                 soundList.put(soundName, new Sound(path + name));
                 loadedFiles.append(soundName + ",");
-            } else {
+            } else if(!name.contains(".")){
             	loadedFiles.append(loadFromDirectory(path + name + GameJava.directoryChar));
             }
         }
@@ -54,6 +54,10 @@ public class Sounds {
         return loadedFiles.toString();
     }
 	
+    /**
+     * plays a sound
+     * @param soundName
+     */
 	public static void play(String soundName) {
 		Sound s = soundList.get(soundName);
         if (s == null) {
@@ -62,6 +66,10 @@ public class Sounds {
         soundList.get(soundName).play();
 	}
 
+	/**
+	 * stops a sound
+	 * @param soundName
+	 */
 	public static void stop(String soundName) {
 		Sound s = soundList.get(soundName);
         if (s == null) {
@@ -70,6 +78,10 @@ public class Sounds {
         soundList.get(soundName).stop();
 	}
 	
+	/**
+	 * starts a sound and sets it to loop
+	 * @param soundName
+	 */
 	public static void loop(String soundName) {
 		Sound s = soundList.get(soundName);
         if (s == null) {
@@ -78,11 +90,18 @@ public class Sounds {
         soundList.get(soundName).loop();
 	}
 	
-	public static void ajustGain(String soundName) {
+	/**
+	 * 
+	 * @param soundName
+	 * @param level number between 0.0 and 1.0
+	 */
+	public static void ajustGain(String soundName, float level) {
 		Sound s = soundList.get(soundName);
         if (s == null) {
             System.out.println("error: " + soundName + " not found");
         }
-        soundList.get("step").ajustGain(10.0f);
+        level = Math.max(Math.min(level, 1.0f), 0.0f);
+        
+        soundList.get(soundName).ajustGain(level);
 	}
 }

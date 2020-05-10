@@ -27,7 +27,9 @@ public class LoopManager {
     static UpdateThread ut;
 
     // multi threading code from https://www.tutorialspoint.com/java/java_multithreading.htm
-    public static class UpdateThread implements Runnable {
+    
+    // update thread
+    private static class UpdateThread implements Runnable {
         private Thread t;
         private String threadName;
 
@@ -86,6 +88,7 @@ public class LoopManager {
         ut = new UpdateThread("update thread");
         ut.start();
 
+        // drawing thread
         while (GameJava.running) {
             // drawing
             double currentTime = System.nanoTime();
